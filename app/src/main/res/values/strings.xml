@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">MEMSystem</string>
+    <string name="status">Status</string>
+    <string name="Logo">TODO</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="mem_health_monitoring_system">MEM Health Monitoring System</string>
+    <string name="register">Register</string>
+    <string name="next">Next</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="remember_me">Remember me</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="doctor">Doctor</string>
+    <string name="patient">Patient</string>
+    <string name="relative">Relative</string>
+    <string name="paramedic">Paramedic</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_a_new_account">Create a new account?</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="select_your_gender">Select Your Gender:</string>
+    <string name="select_your_role">Select Your Role:</string>
+    <string name="select_your_specialty">Select Your Specialty:</string>
+    <string-array name="roles">
+        <item>Doctor</item>
+        <item>Paramedic</item>
+        <item>Patient</item>
+        <item>Relative</item>
+    </string-array>
+    <string name="patient_register">Patient Register</string>
+    <string name="doctor_register">Doctor Register</string>
+    <string name="paramedic_register">Paramedic Register</string>
+    <string name="relative_register">Relative Register</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="patient_name">Patient Name</string>
+    <string name="address">Address</string>
+    <string name="employeeid">Employee ID</string>
+    <string name="ambulanceid">Ambulance ID</string>
+    <string name="specialty">ٍMedical Specialty</string>
+    <string name="iot_device_ip">IOT Device IP</string>
+    <string name="relative_phone1">ٍRelative Phone Number 1</string>
+    <string name="relative_phone2">Relative Phone Number 2</string>
+    <string name="select_your_doctor">Select Your doctor:</string>
+    <string name="iot_mac_address">IOT Mac Address</string>
+    <string-array name="specialties">
+        <item>Heart disease</item>
+        <item>Orthopedic surgery</item>
+        <item>Urology and its surgery</item>
+        <item>Ophthalmology and surgery</item>
+        <item>Gynecology</item>
+        <item>Pediatric</item>
+        <item>Chest and respiratory system</item>
+        <item>Radiology</item>
+        <item>Ear, nose and throat</item>
+        <item>Neurology and surgery</item>
+        <item>Dermatologist</item>
+        <item>plastic surgery</item>
+        <item>Internal medicine</item>
+    </string-array>
+</resources>
