@@ -1,8 +1,4 @@
-package com.birzeit.memsystem;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+package com.birzeit.memsystem.Paramedic;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,6 +10,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.birzeit.memsystem.LoginActivity;
+import com.birzeit.memsystem.R;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -22,7 +25,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-public class ParamedicRegister extends AppCompatActivity {
+public class ParamedicRegisterActivity extends AppCompatActivity {
 
     public EditText ambulanceId_edt;
 
@@ -143,9 +146,9 @@ public class ParamedicRegister extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            Toast.makeText(ParamedicRegister.this, result, Toast.LENGTH_LONG).show();
+            Toast.makeText(ParamedicRegisterActivity.this, result, Toast.LENGTH_LONG).show();
             if(result.trim().equals("Register Success")) {
-                Intent intent = new Intent(ParamedicRegister.this, LoginActivity.class);
+                Intent intent = new Intent(ParamedicRegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -162,7 +165,7 @@ public class ParamedicRegister extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 123);
 
         } else {
-            ParamedicRegister.SendPostRequest runner = new ParamedicRegister.SendPostRequest();
+            ParamedicRegisterActivity.SendPostRequest runner = new ParamedicRegisterActivity.SendPostRequest();
             runner.execute(URL);
         }
     }

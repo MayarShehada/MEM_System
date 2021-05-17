@@ -14,20 +14,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MEMSystem"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PatientChecksActivity">
+        <activity android:name=".Patient.NormalCaseActivity"></activity>
+        <activity android:name=".Relative.RelativeHomeActivity" />
+        <activity android:name=".Paramedic.ParamedicHomeActivity" />
+        <activity android:name=".Doctor.DoctorHomeActivity" />
+        <activity android:name=".CheckActivity" />
+        <activity android:name=".Paramedic.ParamedicWelcomeActivity" />
+        <activity android:name=".Relative.RelativeWelcomeActivity" />
+        <activity android:name=".Patient.PatientWelcomeActivity" />
+        <activity android:name=".Doctor.DoctorWelcomeActivity" />
+        <activity android:name=".Patient.PatientHomeActivity" />
+        <activity android:name=".Paramedic.ParamedicRegisterActivity" />
+        <activity android:name=".Relative.RelativeRegisterActivity" />
+        <activity android:name=".Doctor.DoctorRegister" />
+        <activity android:name=".Patient.PatientRegisterActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ParamedicRegister" />
-        <activity android:name=".RelativeRegister" />
-        <activity android:name=".DoctorRegister" />
-        <activity android:name=".PatientRegister" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity"/>
-
+        <activity android:name=".ListOfChecksActivity" />
         <activity android:name=".RegisterActivity" />
 
         <meta-data

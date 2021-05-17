@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
+    android:background="@color/Node"
     tools:context=".LoginActivity">
 
     <TextView
@@ -115,13 +115,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="70dp"
-        android:autofillHints=""
         android:drawableStart="@drawable/username"
         android:drawablePadding="10sp"
         android:drawableTint="@color/RED1"
         android:ems="10"
         android:hint="@string/username"
-        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:shadowColor="#FFFFFF"
         android:shadowDx="1.5"
@@ -179,7 +177,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="70dp"
-        android:autofillHints=""
         android:drawableStart="@drawable/password"
         android:drawablePadding="10sp"
         android:drawableTint="@color/RED1"

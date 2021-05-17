@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
-    tools:context=".DoctorRegister">
+    android:background="@color/Node"
+    tools:context=".Doctor.DoctorRegister">
 
     <TextView
         android:id="@+id/textView3"
@@ -28,12 +28,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:autofillHints=""
         android:drawableStart="@drawable/empid"
         android:drawablePadding="10sp"
         android:drawableTint="@color/RED1"
         android:ems="10"
-        android:enabled="true"
         android:fontFamily="sans-serif-medium"
         android:hint="@string/employeeid"
         android:importantForAutofill="no"

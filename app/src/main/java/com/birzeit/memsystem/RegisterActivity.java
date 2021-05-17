@@ -1,9 +1,5 @@
 package com.birzeit.memsystem;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,6 +14,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.birzeit.memsystem.Doctor.DoctorRegister;
+import com.birzeit.memsystem.Paramedic.ParamedicRegisterActivity;
+import com.birzeit.memsystem.Patient.PatientRegisterActivity;
+import com.birzeit.memsystem.Relative.RelativeRegisterActivity;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -207,7 +212,7 @@ public class RegisterActivity extends AppCompatActivity {
                     intent.putExtra("roleData", role);
                     startActivity(intent);
                 } else if (role.equals("Paramedic")) {
-                    Intent intent = new Intent(RegisterActivity.this, ParamedicRegister.class);
+                    Intent intent = new Intent(RegisterActivity.this, ParamedicRegisterActivity.class);
                     intent.putExtra("nameData", fullname);
                     intent.putExtra("usernameData", username);
                     intent.putExtra("emailData", email);
@@ -217,7 +222,7 @@ public class RegisterActivity extends AppCompatActivity {
                     intent.putExtra("roleData", role);
                     startActivity(intent);
                 } else if (role.equals("Patient")) {
-                    Intent intent = new Intent(RegisterActivity.this, PatientRegister.class);
+                    Intent intent = new Intent(RegisterActivity.this, PatientRegisterActivity.class);
                     intent.putExtra("nameData", fullname);
                     intent.putExtra("usernameData", username);
                     intent.putExtra("emailData", email);
@@ -227,7 +232,7 @@ public class RegisterActivity extends AppCompatActivity {
                     intent.putExtra("roleData", role);
                     startActivity(intent);
                 } else if (role.equals("Relative")) {
-                    Intent intent = new Intent(RegisterActivity.this, RelativeRegister.class);
+                    Intent intent = new Intent(RegisterActivity.this, RelativeRegisterActivity.class);
                     intent.putExtra("nameData", fullname);
                     intent.putExtra("usernameData", username);
                     intent.putExtra("emailData", email);

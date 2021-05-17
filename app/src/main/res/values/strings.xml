@@ -44,6 +44,10 @@
     <string name="relative_phone2">Relative Phone Number 2</string>
     <string name="select_your_doctor">Select Your doctor:</string>
     <string name="iot_mac_address">IOT Mac Address</string>
+    <string name="welcome_to_patient_home_page">Welcome To Patient Home Page</string>
+    <string name="welcome_to_relative_home_page">Welcome to Relative Home Page</string>
+    <string name="welcome_to_paramedic_home_page">Welcome to Paramedic Home Page</string>
+    <string name="welcome_to_doctor_home_page">Welcome To Doctor Home Page</string>
     <string-array name="specialties">
         <item>Heart disease</item>
         <item>Orthopedic surgery</item>

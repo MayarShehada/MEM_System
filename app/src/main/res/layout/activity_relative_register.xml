@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
-    tools:context=".RelativeRegister">
+    android:background="@color/Node"
+    tools:context=".Relative.RelativeRegisterActivity">
 
     <TextView
         android:id="@+id/textView3"
@@ -45,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:autofillHints=""
         android:drawableStart="@drawable/patient"
         android:drawablePadding="10sp"
         android:drawableTint="@color/RED1"

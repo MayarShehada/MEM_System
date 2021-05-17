@@ -9,9 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="Gray">#3A3838</color>
     <color name="DarkRed">#592E2E</color>
-    <color name="Gray2">#DDDDDD</color>
+    <color name="Gray2">#EDEBD3</color>
     <color name="White">#ECE6E5</color>
     <color name="RED1">#FFB33939</color>
     <color name="lightRed">#FFBD5D5D</color>
+    <color name="Node">#F9F8E8</color>
 
 </resources>

@@ -1,8 +1,4 @@
-package com.birzeit.memsystem;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+package com.birzeit.memsystem.Relative;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,6 +10,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.birzeit.memsystem.LoginActivity;
+import com.birzeit.memsystem.R;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -22,7 +25,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-public class RelativeRegister extends AppCompatActivity {
+public class RelativeRegisterActivity extends AppCompatActivity {
 
     public EditText patientname_edt;
 
@@ -143,9 +146,9 @@ public class RelativeRegister extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            Toast.makeText(RelativeRegister.this, result, Toast.LENGTH_LONG).show();
+            Toast.makeText(RelativeRegisterActivity.this, result, Toast.LENGTH_LONG).show();
             if(result.trim().equals("Register Success")) {
-                Intent intent = new Intent(RelativeRegister.this, LoginActivity.class);
+                Intent intent = new Intent(RelativeRegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -162,7 +165,7 @@ public class RelativeRegister extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 123);
 
         } else {
-            RelativeRegister.SendPostRequest runner = new RelativeRegister.SendPostRequest();
+            RelativeRegisterActivity.SendPostRequest runner = new RelativeRegisterActivity.SendPostRequest();
             runner.execute(URL);
         }
     }

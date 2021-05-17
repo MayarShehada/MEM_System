@@ -1,16 +1,12 @@
 package com.birzeit.memsystem;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -20,13 +16,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.birzeit.memsystem.Doctor.DoctorWelcomeActivity;
+import com.birzeit.memsystem.Paramedic.ParamedicWelcomeActivity;
+import com.birzeit.memsystem.Patient.PatientWelcomeActivity;
+import com.birzeit.memsystem.Relative.RelativeWelcomeActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -35,8 +42,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,7 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox remember_check;
     private TextView signup_txt;
 
-    public String username, password;
+    RequestQueue requestQueue;
+    public String username, password, user;
     public String URL = "http://192.168.1.124:80/MEM_System/Login.php";
 
     @Override
@@ -54,17 +60,19 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setupViews();
-        //checkRememberMe();
+        checkRememberMe();
     }
 
     private void setupViews() {
         username = "";
         password = "";
+        user = "";
         userName_edt = findViewById(R.id.userName_edt);
         password_edt = findViewById(R.id.password_edt);
         login_btn = findViewById(R.id.login_btn);
         remember_check = findViewById(R.id.remember_check);
         signup_txt = findViewById(R.id.signup_txt);
+        requestQueue = Volley.newRequestQueue(this);
     }
 
     private void checkRememberMe() {
@@ -115,6 +123,8 @@ public class LoginActivity extends AppCompatActivity {
 
             data += "&" + URLEncoder.encode("password", "UTF-8")
                     + "=" + URLEncoder.encode(password, "UTF-8");
+
+            checkUser();
 
             BufferedReader reader = null;
 
@@ -174,10 +184,20 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            Toast.makeText(LoginActivity.this, result, Toast.LENGTH_LONG).show();
-
-            if(result.trim().equals("Login Success")) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            if( user.equals("Doctor")) {
+                Intent intent = new Intent(LoginActivity.this, DoctorWelcomeActivity.class);
+                startActivity(intent);
+                finish();
+            }else if(result.trim().equals("Login Success") && user.equals("Patient")){
+                Intent intent = new Intent(LoginActivity.this, PatientWelcomeActivity.class);
+                startActivity(intent);
+                finish();
+            }else if(result.trim().equals("Login Success") && user.equals("Relative")){
+                Intent intent = new Intent(LoginActivity.this, RelativeWelcomeActivity.class);
+                startActivity(intent);
+                finish();
+            }else if(result.trim().equals("Login Success") && user.equals("Paramadic")){
+                Intent intent = new Intent(LoginActivity.this, ParamedicWelcomeActivity.class);
                 startActivity(intent);
                 finish();
             }else if (result.trim().equals("Login Failed")){
@@ -200,39 +220,35 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-//        if(!username.equals("") && !password.equals("")){
-//            StringRequest stringrequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-//                @Override
-//                public void onResponse(String response) {
-//                    if (response.equals("success")) {
-//                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    } else if (response.equals("failure")) {
-//                        Toast.makeText(LoginActivity.this, "Invalid Login Id/Password", Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    Toast.makeText(LoginActivity.this, error.toString().trim() , Toast.LENGTH_LONG).show();
-//                }
-//            }){
-//                @Nullable
-//                @Override
-//                protected Map<String, String> getParams() throws AuthFailureError {
-//                    Map<String, String> data = new HashMap<>();
-//                    data.put("username", username);
-//                    data.put("password", password);
-//                    return data;
-//                }
-//            };
-//            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//            requestQueue.add(stringrequest);
-//        }else{
-//            Toast.makeText(this, "Field cannot be empty!" , Toast.LENGTH_LONG).show();
-//        }
+    private void checkUser() {
 
+        String url = "http://192.168.1.124:80/MEM_System/CheckUser.php?username="+username;
+
+        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray ja = response.getJSONArray("result");
+
+                            for (int i = 0; i < ja.length(); i++) {
+
+                                JSONObject jsonObject = ja.getJSONObject(i);
+                                user = jsonObject.getString("role");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", "Error");
+            }
+        });
+        requestQueue.add(jor);
+    }
 
     public void registerButtonAction(View view) {
 

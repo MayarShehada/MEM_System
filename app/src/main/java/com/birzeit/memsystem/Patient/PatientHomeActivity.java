@@ -1,19 +1,21 @@
-package com.birzeit.memsystem;
+package com.birzeit.memsystem.Patient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.birzeit.memsystem.Doctor.DoctorHomeActivity;
+import com.birzeit.memsystem.ListOfChecksActivity;
+import com.birzeit.memsystem.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class PatientChecksActivity extends AppCompatActivity {
+public class PatientHomeActivity extends AppCompatActivity {
 
     public TextView clock_txt;
-
+    public TextView date_txt;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
     private String date;
@@ -21,7 +23,7 @@ public class PatientChecksActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_checks);
+        setContentView(R.layout.activity_patient_home);
 
         setupViews();
 
@@ -49,21 +51,29 @@ public class PatientChecksActivity extends AppCompatActivity {
             }
         });
 
-//        calendar = Calendar.getInstance();
-//        dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-//        date = dateFormat.format(calendar.getTime());
-//        clock_txt.setText(date);
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        date = dateFormat.format(calendar.getTime());
+        date_txt.setText(date);
     }
 
     private void setupViews() {
+
         clock_txt = findViewById(R.id.clock_txt);
+        date_txt = findViewById(R.id.date_txt);
     }
 
 
     public void info_btn_OnClick(View view) {
+        Intent intent = new Intent(PatientHomeActivity.this, NormalCaseActivity.class);
+        startActivity(intent);
+        finish();
     }
 
-    public void emarg_btn_OnClik(View view) {
+    public void listofchecks_btn_OnClik(View view) {
+        Intent intent = new Intent(PatientHomeActivity.this, ListOfChecksActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
