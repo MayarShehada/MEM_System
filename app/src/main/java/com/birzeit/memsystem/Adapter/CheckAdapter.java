@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.birzeit.memsystem.CheckActivity;
 import com.birzeit.memsystem.Models.Check;
 import com.birzeit.memsystem.R;
+
 import java.util.List;
 
 public class CheckAdapter  extends RecyclerView.Adapter<CheckAdapter.ViewHolder>{

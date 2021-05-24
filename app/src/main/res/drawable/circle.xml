@@ -3,7 +3,7 @@
   <item>
     <shape android:shape="oval">
       <solid android:color="@color/Gray2"></solid>
-      <stroke android:color="@color/RED1"></stroke>
+      <stroke android:color="@color/RED"></stroke>
       <stroke android:width="3sp"> </stroke>
     </shape>
   </item>

@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Node"
+    android:background="@color/Gray"
     tools:context=".Patient.PatientRegisterActivity">
+
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="375dp"
+        android:layout_height="476dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="130dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="45dp"
         android:background="@drawable/box"
@@ -22,7 +23,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-
     <EditText
         android:id="@+id/iotdevice_edt"
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
         android:layout_marginRight="50dp"
         android:drawableStart="@drawable/patient"
         android:drawablePadding="10sp"
-        android:drawableTint="@color/RED1"
+        android:drawableTint="@color/RED"
         android:ems="10"
         android:fontFamily="sans-serif-medium"
         android:hint="@string/iot_device_ip"
@@ -61,7 +61,7 @@
         android:layout_marginRight="50dp"
         android:drawableStart="@drawable/patient"
         android:drawablePadding="10sp"
-        android:drawableTint="@color/RED1"
+        android:drawableTint="@color/RED"
         android:ems="10"
         android:fontFamily="sans-serif-medium"
         android:hint="@string/iot_mac_address"
@@ -91,7 +91,7 @@
         android:layout_marginRight="50dp"
         android:drawableStart="@drawable/address"
         android:drawablePadding="10sp"
-        android:drawableTint="@color/RED1"
+        android:drawableTint="@color/RED"
         android:ems="10"
         android:fontFamily="sans-serif-medium"
         android:hint="@string/address"
@@ -137,7 +137,7 @@
         android:layout_marginRight="50dp"
         android:drawableStart="@drawable/phone"
         android:drawablePadding="10sp"
-        android:drawableTint="@color/RED1"
+        android:drawableTint="@color/RED"
         android:ems="10"
         android:fontFamily="sans-serif-medium"
         android:hint="@string/relative_phone1"
@@ -166,7 +166,7 @@
         android:layout_marginRight="50dp"
         android:drawableStart="@drawable/phone"
         android:drawablePadding="10sp"
-        android:drawableTint="@color/RED1"
+        android:drawableTint="@color/RED"
         android:ems="10"
         android:fontFamily="sans-serif-medium"
         android:hint="@string/relative_phone2"
@@ -188,6 +188,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.693" />
 
+
     <TextView
         android:id="@+id/textView9"
         android:layout_width="match_parent"
@@ -200,11 +201,10 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.266"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.761" />
-
+        app:layout_constraintVertical_bias="0.771" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -216,10 +216,10 @@
         android:spinnerMode="dialog"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833"></Spinner>
+        app:layout_constraintVertical_bias="0.807"></Spinner>
 
     <Button
         android:id="@+id/register_btn"
@@ -228,7 +228,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginBottom="60dp"
-        android:backgroundTint="#FFB33939"
+        android:backgroundTint="@color/RED"
         android:onClick="registerOnClick"
         android:shadowColor="#FFFFFF"
         android:text="@string/register"

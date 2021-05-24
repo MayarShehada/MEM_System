@@ -9,4 +9,4 @@
     android:ellipsize="marquee"
     android:textColor="#3A3838"
     android:background="@drawable/abc_spinner_mtrl_am_alpha"
-    android:backgroundTint="@color/RED1"/>
+    android:backgroundTint="@color/RED"/>

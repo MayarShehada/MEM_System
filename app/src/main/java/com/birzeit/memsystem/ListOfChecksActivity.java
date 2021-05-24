@@ -1,18 +1,31 @@
 package com.birzeit.memsystem;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.birzeit.memsystem.Adapter.CheckAdapter;
 import com.birzeit.memsystem.Models.Check;
+import com.birzeit.memsystem.Patient.NormalCaseActivity;
+import com.birzeit.memsystem.Patient.PatientHomeActivity;
+import com.google.android.material.navigation.NavigationView;
+import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,10 +35,18 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListOfChecksActivity extends AppCompatActivity {
+public class ListOfChecksActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private RecyclerView check_recycle;
     List<Check> checkList;
+    CheckAdapter adapter;
+
+    private TextView name_txt, email_txt;
+    public String fullname, email, role;
+
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
 
     public String URL = "http://192.168.1.124:80/MEM_System/Checks.php";
 
@@ -35,7 +56,13 @@ public class ListOfChecksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_of_checks);
 
         check_recycle = findViewById(R.id.check_recycle);
+
+        setupNavigation();
+        updateNavHeader();
+
         checkList = new ArrayList<>();
+
+
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -47,6 +74,96 @@ public class ListOfChecksActivity extends AppCompatActivity {
         } else {
             ListOfChecksActivity.DownloadTextTask runner = new DownloadTextTask();
             runner.execute(URL);
+        }
+    }
+
+    public void setupNavigation(){
+        //ToolBar
+        setSupportActionBar(toolbar);
+
+        //NavigationDrawer Menu
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(ListOfChecksActivity.this,
+                drawerLayout,
+                toolbar,
+                R.string.open,
+                R.string.close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_home);
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else{
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+        if(item.getItemId() == R.id.nav_home){
+
+            Intent intent = new Intent(ListOfChecksActivity.this, PatientHomeActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+
+        }else if(item.getItemId() == R.id.nav_listOfChecks){
+            Intent intent = new Intent(ListOfChecksActivity.this, ListOfChecksActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+
+        }else if(item.getItemId() == R.id.nav_normalCase){
+            Intent intent = new Intent(ListOfChecksActivity.this, NormalCaseActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+
+        }else if(item.getItemId() == R.id.nav_profile){
+
+        }else if(item.getItemId() == R.id.nav_setting){
+
+        }else if(item.getItemId() == R.id.nav_logOut){
+
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    public void updateNavHeader() {
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_menu);
+        View headerView = navigationView.getHeaderView(0);
+        name_txt = headerView.findViewById(R.id.name_txt);
+        email_txt = headerView.findViewById(R.id.email_txt);
+
+        Intent intent = getIntent();
+        fullname = intent.getStringExtra("fullnameData");
+        email = intent.getStringExtra("emailData");
+
+        name_txt.setText(fullname);
+        email_txt.setText(email);
+    }
+
+
+    private void filter(String text) {
+        ArrayList<Check> filterList = new ArrayList<>();
+        for (Check item : checkList)
+        {
+            if (item.getDateOfCheck().toLowerCase().contains(text.toLowerCase()))
+            {
+                filterList.add(item);
+            }
         }
     }
 

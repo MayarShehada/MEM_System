@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -20,20 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.birzeit.memsystem.Doctor.DoctorWelcomeActivity;
-import com.birzeit.memsystem.Paramedic.ParamedicWelcomeActivity;
-import com.birzeit.memsystem.Patient.PatientWelcomeActivity;
-import com.birzeit.memsystem.Relative.RelativeWelcomeActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -50,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button login_btn;
     private CheckBox remember_check;
     private TextView signup_txt;
-
     RequestQueue requestQueue;
     public String username, password, user;
     public String URL = "http://192.168.1.124:80/MEM_System/Login.php";
@@ -124,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             data += "&" + URLEncoder.encode("password", "UTF-8")
                     + "=" + URLEncoder.encode(password, "UTF-8");
 
-            checkUser();
+            //checkUser();
 
             BufferedReader reader = null;
 
@@ -184,20 +170,10 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            if( user.equals("Doctor")) {
-                Intent intent = new Intent(LoginActivity.this, DoctorWelcomeActivity.class);
-                startActivity(intent);
-                finish();
-            }else if(result.trim().equals("Login Success") && user.equals("Patient")){
-                Intent intent = new Intent(LoginActivity.this, PatientWelcomeActivity.class);
-                startActivity(intent);
-                finish();
-            }else if(result.trim().equals("Login Success") && user.equals("Relative")){
-                Intent intent = new Intent(LoginActivity.this, RelativeWelcomeActivity.class);
-                startActivity(intent);
-                finish();
-            }else if(result.trim().equals("Login Success") && user.equals("Paramadic")){
-                Intent intent = new Intent(LoginActivity.this, ParamedicWelcomeActivity.class);
+            Toast.makeText(LoginActivity.this, result, Toast.LENGTH_LONG).show();
+            if(result.trim().equals("Login Success") ){
+                Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                intent.putExtra("usernameData", username);
                 startActivity(intent);
                 finish();
             }else if (result.trim().equals("Login Failed")){
@@ -218,36 +194,6 @@ public class LoginActivity extends AppCompatActivity {
             LoginActivity.SendPostRequest runner = new LoginActivity.SendPostRequest();
             runner.execute(URL);
         }
-    }
-
-    private void checkUser() {
-
-        String url = "http://192.168.1.124:80/MEM_System/CheckUser.php?username="+username;
-
-        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-                            JSONArray ja = response.getJSONArray("result");
-
-                            for (int i = 0; i < ja.length(); i++) {
-
-                                JSONObject jsonObject = ja.getJSONObject(i);
-                                user = jsonObject.getString("role");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Volley", "Error");
-            }
-        });
-        requestQueue.add(jor);
     }
 
     public void registerButtonAction(View view) {

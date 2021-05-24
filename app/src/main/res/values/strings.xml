@@ -63,4 +63,23 @@
         <item>plastic surgery</item>
         <item>Internal medicine</item>
     </string-array>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="menu_home">Home</string>
+    <string name="information">Information</string>
+    <string name="list_of_checks">List of Checks</string>
+    <string name="last_check_details">Last Check Details</string>
+    <string name="logout">Logout</string>
+    <string name="home">Home</string>
+    <string name="setting">Setting</string>
+    <string name="profile">Profile</string>
+    <string name="normal_case">Normal Case</string>
+    <string name="user">User</string>
+    <string name="menu">Menu</string>
+    <string name="check_date_amp_time">Check Date amp Time</string>
+    <string name="blood_pressure">Blood Pressure</string>
+    <string name="body_temperature">Body Temperature</string>
+    <string name="heart_beat">Heart Beat</string>
+    <string name="welcome_to_mem_health_monitoring_system">Welcome to MEM Health Monitoring System</string>
+    <string name="search_here">Search Here</string>
 </resources>
