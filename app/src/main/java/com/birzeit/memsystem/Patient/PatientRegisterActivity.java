@@ -88,7 +88,7 @@ public class PatientRegisterActivity extends AppCompatActivity {
 
     private void populateSpinner() {
 
-        String url = "http://192.168.1.124:80/MEM_System/DoctorSpinner.php";
+        String url = "http://192.168.1.28:80/MEM_System/DoctorSpinner.php";
 
         JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -112,9 +112,6 @@ public class PatientRegisterActivity extends AppCompatActivity {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                         doctorname = (String) parent.getItemAtPosition(position);
-                                        // Notify the selected item text
-                                        Toast toast = Toast.makeText(getApplicationContext(), doctorname, Toast.LENGTH_SHORT);
-                                        toast.show();
                                     }
 
                                     @Override

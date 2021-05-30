@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_map"
+            android:title="@string/map" />
+        <item
+            android:id="@+id/nav_gpsTrack"
+            android:icon="@drawable/ic_gps"
+            android:title="@string/gps_track" />
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:title="@string/user">
+            <menu>
+                <item
+                    android:id="@+id/nav_profile"
+                    android:icon="@drawable/ic_person"
+                    android:title="@string/profile" />
+                <item
+                    android:id="@+id/nav_setting"
+                    android:icon="@drawable/ic_setting"
+                    android:title="@string/setting" />
+                <item
+                    android:id="@+id/nav_logOut"
+                    android:icon="@drawable/ic_logout"
+                    android:title="@string/logout" />
+            </menu>
+        </item>
+    </group>
+</menu>

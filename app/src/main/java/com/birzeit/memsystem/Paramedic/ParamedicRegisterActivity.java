@@ -30,7 +30,7 @@ public class ParamedicRegisterActivity extends AppCompatActivity {
     public EditText ambulanceId_edt;
 
     public String fullname, username, password, email, phonenum, gender, role, ambulanceid;
-    public String URL = "http://192.168.1.124:80/MEM_System/ParamadicRegister.php";
+    public String URL = "http://192.168.1.28:80/MEM_System/ParamadicRegister.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

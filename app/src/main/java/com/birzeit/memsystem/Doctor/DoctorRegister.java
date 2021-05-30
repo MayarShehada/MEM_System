@@ -33,7 +33,7 @@ public class DoctorRegister extends AppCompatActivity {
     public Spinner spinner;
 
     public String fullname, username, password, email, phonenum, gender, role, employeeid, specialty;
-    public String URL = "http://192.168.1.124:80/MEM_System/DoctorRegister.php";
+    public String URL = "http://192.168.1.28:80/MEM_System/DoctorRegister.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

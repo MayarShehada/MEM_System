@@ -45,7 +45,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void  checkUser() {
 
-        String url = "http://192.168.1.124:80/MEM_System/CheckUser.php?username="+username;
+        String url = "http://192.168.1.28:80/MEM_System/CheckUser.php?username="+username;
 
         JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -66,15 +66,15 @@ public class WelcomeActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
 
-                                    if (role.equals("Doctor")) {
-                                        Intent intent = new Intent(WelcomeActivity.this, DoctorHomeActivity.class);
+                                    if (role.equals("Patient")) {
+                                        Intent intent = new Intent(WelcomeActivity.this, PatientHomeActivity.class);
                                         intent.putExtra("fullnameData", fullname);
                                         intent.putExtra("roleData", role);
                                         intent.putExtra("emailData", email);
                                         startActivity(intent);
                                         finish();
-                                    } else if (role.equals("Patient")) {
-                                        Intent intent = new Intent(WelcomeActivity.this, PatientHomeActivity.class);
+                                    } else if (role.equals("Paramedic")) {
+                                        Intent intent = new Intent(WelcomeActivity.this, ParamedicHomeActivity.class);
                                         intent.putExtra("fullnameData", fullname);
                                         intent.putExtra("roleData", role);
                                         intent.putExtra("emailData", email);
@@ -87,8 +87,8 @@ public class WelcomeActivity extends AppCompatActivity {
                                         intent.putExtra("emailData", email);
                                         startActivity(intent);
                                         finish();
-                                    } else if (role.equals("Paramadic")) {
-                                        Intent intent = new Intent(WelcomeActivity.this, ParamedicHomeActivity.class);
+                                    } else if (role.equals("Doctor")) {
+                                        Intent intent = new Intent(WelcomeActivity.this, DoctorHomeActivity.class);
                                         intent.putExtra("fullnameData", fullname);
                                         intent.putExtra("roleData", role);
                                         intent.putExtra("emailData", email);

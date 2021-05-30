@@ -50,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     public String fullname, username, password, repassword, email, phonenum, gender, role;
-    public String URL = "http://192.168.1.124:80/MEM_System/Register.php";
+    public String URL = "http://192.168.1.28:80/MEM_System/Register.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -14,28 +14,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MEMSystem"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WelcomeActivity"></activity>
-        <activity android:name=".PatientActivity" />
+        <activity android:name=".Doctor.CheckInfoActivity"></activity>
+        <activity android:name=".Doctor.PatientInfoActivity" />
+        <activity android:name=".Patient.LastCheckActivity" />
+        <activity android:name=".Relative.EditRelativeInfoActivity" />
+        <activity android:name=".Patient.EditPatientInfoActivity" />
+        <activity android:name=".Paramedic.EditParamedicInfoActivity" />
+        <activity android:name=".Doctor.EditDoctorInfoActivity" />
+        <activity android:name=".Relative.RelativeProfileActivity" />
+        <activity android:name=".Doctor.DoctorProfileActivity" />
+        <activity android:name=".Doctor.ListOfPatientActivity" />
+        <activity android:name=".Paramedic.ParamedicProfileActivity" />
+        <activity android:name=".Patient.PatientProfileActivity" />
+        <activity android:name=".WelcomeActivity" />
         <activity android:name=".Patient.NormalCaseActivity" />
         <activity android:name=".Relative.RelativeHomeActivity" />
         <activity android:name=".Paramedic.ParamedicHomeActivity" />
         <activity android:name=".Doctor.DoctorHomeActivity" />
         <activity android:name=".CheckActivity" />
         <activity android:name=".Patient.PatientHomeActivity" />
-
         <activity android:name=".Paramedic.ParamedicRegisterActivity" />
         <activity android:name=".Relative.RelativeRegisterActivity" />
         <activity android:name=".Doctor.DoctorRegister" />
         <activity android:name=".Patient.PatientRegisterActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity" >
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListOfChecksActivity" />
+        <activity android:name=".Patient.ListOfChecksActivity" />
         <activity android:name=".RegisterActivity" />
 
         <meta-data

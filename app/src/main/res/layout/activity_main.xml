@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/patient_header"
+        app:headerLayout="@layout/navigation_patient"
         app:menu="@menu/patient_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

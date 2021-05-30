@@ -13,7 +13,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.birzeit.memsystem.ListOfChecksActivity;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -21,11 +20,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class PatientHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public TextView heartbeat_txt, bodyTemp_txt, bloodPress_txt, dateTime_txt;
-
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
     private TextView name_txt, email_txt;
     public String fullname, email, role;
 
@@ -41,11 +39,6 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
     }
 
     private void setupViews() {
-        heartbeat_txt = findViewById(R.id.heartBeat_txt);
-        bodyTemp_txt = findViewById(R.id.bodyTemp_txt);
-        bloodPress_txt = findViewById(R.id.bloodPress_txt);
-        dateTime_txt = findViewById(R.id.dateTime_txt);
-
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
@@ -64,10 +57,8 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
-
     }
 
     @Override
@@ -89,6 +80,13 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
             startActivity(intent);
             finish();
 
+        }else if(item.getItemId() == R.id.nav_lastCheck){
+            Intent intent = new Intent(PatientHomeActivity.this, LastCheckActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+
         }else if(item.getItemId() == R.id.nav_listOfChecks){
             Intent intent = new Intent(PatientHomeActivity.this, ListOfChecksActivity.class);
             intent.putExtra("fullnameData", fullname);
@@ -104,6 +102,11 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
             finish();
 
         }else if(item.getItemId() == R.id.nav_profile){
+            Intent intent = new Intent(PatientHomeActivity.this, PatientProfileActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
 
@@ -127,5 +130,30 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
 
         name_txt.setText(fullname);
         email_txt.setText(email);
+    }
+
+    public void last_check_details_btn_Action(View view) {
+        Intent intent = new Intent(PatientHomeActivity.this, LastCheckActivity.class);
+        intent.putExtra("fullnameData", fullname);
+        intent.putExtra("emailData", email);
+        startActivity(intent);
+        finish();
+    }
+
+    public void list_of_checks_btn_Action(View view) {
+        Intent intent = new Intent(PatientHomeActivity.this, ListOfChecksActivity.class);
+        intent.putExtra("fullnameData", fullname);
+        intent.putExtra("emailData", email);
+        startActivity(intent);
+        finish();
+    }
+
+
+    public void normal_case_btn_Action(View view) {
+        Intent intent = new Intent(PatientHomeActivity.this, NormalCaseActivity.class);
+        intent.putExtra("fullnameData", fullname);
+        intent.putExtra("emailData", email);
+        startActivity(intent);
+        finish();
     }
 }

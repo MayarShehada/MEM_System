@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView signup_txt;
     RequestQueue requestQueue;
     public String username, password, user;
-    public String URL = "http://192.168.1.124:80/MEM_System/Login.php";
+    public String URL = "http://192.168.1.28:80/MEM_System/Login.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

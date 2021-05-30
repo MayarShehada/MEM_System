@@ -1,4 +1,4 @@
-package com.birzeit.memsystem;
+package com.birzeit.memsystem.Patient;
 
 import android.Manifest;
 import android.content.Intent;
@@ -22,8 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.birzeit.memsystem.Adapter.CheckAdapter;
 import com.birzeit.memsystem.Models.Check;
-import com.birzeit.memsystem.Patient.NormalCaseActivity;
-import com.birzeit.memsystem.Patient.PatientHomeActivity;
+import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
@@ -39,7 +38,6 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
 
     private RecyclerView check_recycle;
     List<Check> checkList;
-    CheckAdapter adapter;
 
     private TextView name_txt, email_txt;
     public String fullname, email, role;
@@ -48,20 +46,18 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
     private NavigationView navigationView;
     private Toolbar toolbar;
 
-    public String URL = "http://192.168.1.124:80/MEM_System/Checks.php";
+    public String URL = "http://192.168.1.28:80/MEM_System/Checks.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_checks);
 
-        check_recycle = findViewById(R.id.check_recycle);
-
+        setupViews();
         setupNavigation();
         updateNavHeader();
 
         checkList = new ArrayList<>();
-
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.INTERNET)
@@ -75,6 +71,14 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
             ListOfChecksActivity.DownloadTextTask runner = new DownloadTextTask();
             runner.execute(URL);
         }
+    }
+
+    public void setupViews() {
+
+        check_recycle = findViewById(R.id.check_recycle);
+        drawerLayout = findViewById(R.id.drawerlayout);
+        navigationView = findViewById(R.id.nav_menu);
+        toolbar = findViewById(R.id.toolbar);
     }
 
     public void setupNavigation(){
@@ -92,8 +96,7 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_home);
-
+        navigationView.setCheckedItem(R.id.nav_listOfChecks);
     }
 
     @Override
@@ -115,7 +118,14 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
             startActivity(intent);
             finish();
 
-        }else if(item.getItemId() == R.id.nav_listOfChecks){
+        }else if(item.getItemId() == R.id.nav_lastCheck){
+            Intent intent = new Intent(ListOfChecksActivity.this, LastCheckActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+
+        } else if(item.getItemId() == R.id.nav_listOfChecks){
             Intent intent = new Intent(ListOfChecksActivity.this, ListOfChecksActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
@@ -130,6 +140,11 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
             finish();
 
         }else if(item.getItemId() == R.id.nav_profile){
+            Intent intent = new Intent(ListOfChecksActivity.this, PatientProfileActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
 
@@ -153,18 +168,6 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
 
         name_txt.setText(fullname);
         email_txt.setText(email);
-    }
-
-
-    private void filter(String text) {
-        ArrayList<Check> filterList = new ArrayList<>();
-        for (Check item : checkList)
-        {
-            if (item.getDateOfCheck().toLowerCase().contains(text.toLowerCase()))
-            {
-                filterList.add(item);
-            }
-        }
     }
 
     private InputStream OpenHttpConnection(String urlString) throws IOException {

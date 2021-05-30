@@ -30,7 +30,7 @@ public class RelativeRegisterActivity extends AppCompatActivity {
     public EditText patientname_edt;
 
     public String fullname, username, password, email, phonenum, gender, role, patientname;
-    public String URL = "http://192.168.1.124:80/MEM_System/RelativeRegister.php";
+    public String URL = "http://192.168.1.28:80/MEM_System/RelativeRegister.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,14 +7,18 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/Gray"
-    tools:context=".ListOfChecksActivity"
+    tools:context=".Patient.ListOfChecksActivity"
     tools:openDrawer="start">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListOfChecksActivity"
+    tools:context=".Patient.ListOfChecksActivity"
     android:background="@color/Gray">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/patient_toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/check_recycle"
@@ -28,14 +32,14 @@
         app:layout_constraintVertical_bias="0.826" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/patient_header"
+        app:headerLayout="@layout/navigation_patient"
         app:menu="@menu/patient_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -82,4 +82,12 @@
     <string name="heart_beat">Heart Beat</string>
     <string name="welcome_to_mem_health_monitoring_system">Welcome to MEM Health Monitoring System</string>
     <string name="search_here">Search Here</string>
+    <string name="list_of_patients">List of Patients</string>
+    <string name="patient_check_list">Patient Check List</string>
+    <string name="list_of_paramedics">List of Paramedics</string>
+    <string name="gps_track">GPS Track</string>
+    <string name="map">Map</string>
+    <string name="gps_tracking">GPS Tracking</string>
+    <string name="emergency_stuff_list">Emergency Stuff List</string>
+    <string name="patient_list">Patient List</string>
 </resources>
