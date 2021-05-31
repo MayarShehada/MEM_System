@@ -7,16 +7,34 @@ public class Check {
     private String bodyTemp;
     private String bloodPressure;
     private String dateOfCheck;
-
+    private String role;
     public Check() {
     }
 
-    public Check(int checkId, String heartBeat, String bodyTemp, String bloodPressure, String dateOfCheck) {
+//    public Check(int checkId, String heartBeat, String bodyTemp, String bloodPressure, String dateOfCheck) {
+//        this.checkId = checkId;
+//        this.heartBeat = heartBeat;
+//        this.bodyTemp = bodyTemp;
+//        this.bloodPressure = bloodPressure;
+//        this.dateOfCheck = dateOfCheck;
+//    }
+
+
+    public Check(int checkId, String heartBeat, String bodyTemp, String bloodPressure, String dateOfCheck, String role) {
         this.checkId = checkId;
         this.heartBeat = heartBeat;
         this.bodyTemp = bodyTemp;
         this.bloodPressure = bloodPressure;
         this.dateOfCheck = dateOfCheck;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public int getCheckId() {

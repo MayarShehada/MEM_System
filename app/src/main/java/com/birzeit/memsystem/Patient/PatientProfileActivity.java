@@ -176,7 +176,6 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
         name_txt = headerView.findViewById(R.id.name_txt);
         email_txt = headerView.findViewById(R.id.email_txt);
 
-
         name_txt.setText(fullname);
         email_txt.setText(email);
     }

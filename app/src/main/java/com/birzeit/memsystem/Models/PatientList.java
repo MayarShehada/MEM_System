@@ -4,11 +4,11 @@ package com.birzeit.memsystem.Models;
 public class PatientList {
 
     private int id;
-    private String fullname,email,phonenum,gender,address,relative1,relative2;
+    private String fullname,email,phonenum,gender,address,relative1,relative2,Doctor_fullName,Doctor_email ;
 
     public PatientList() {}
 
-    public PatientList(int id, String fullname, String email, String phonenum, String gender, String address, String relative1, String relative2) {
+    public PatientList(int id, String fullname, String email, String phonenum, String gender, String address, String relative1, String relative2, String doctor_fullName, String doctor_email) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
@@ -17,6 +17,8 @@ public class PatientList {
         this.address = address;
         this.relative1 = relative1;
         this.relative2 = relative2;
+        Doctor_fullName = doctor_fullName;
+        Doctor_email = doctor_email;
     }
 
     public int getId() {
@@ -83,6 +85,22 @@ public class PatientList {
         this.relative2 = relative2;
     }
 
+    public String getDoctor_fullName() {
+        return Doctor_fullName;
+    }
+
+    public void setDoctor_fullName(String doctor_fullName) {
+        Doctor_fullName = doctor_fullName;
+    }
+
+    public String getDoctor_email() {
+        return Doctor_email;
+    }
+
+    public void setDoctor_email(String doctor_email) {
+        Doctor_email = doctor_email;
+    }
+
     @Override
     public String toString() {
         return "PatientList{" +
@@ -94,7 +112,10 @@ public class PatientList {
                 ", address='" + address + '\'' +
                 ", relative1='" + relative1 + '\'' +
                 ", relative2='" + relative2 + '\'' +
+                ", Doctor_fullName='" + Doctor_fullName + '\'' +
+                ", Doctor_email='" + Doctor_email + '\'' +
                 '}';
     }
 }
+
 

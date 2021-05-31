@@ -207,7 +207,12 @@ public class EditDoctorInfoActivity extends AppCompatActivity implements Navigat
             intent.putExtra("emailData", email);
             startActivity(intent);
             finish();
-
+        }else if(item.getItemId() == R.id.nav_listOfParamedic){
+            Intent intent = new Intent(EditDoctorInfoActivity.this, ListOfParamedicActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
         }else if(item.getItemId() == R.id.nav_setting){
             Intent intent = new Intent(EditDoctorInfoActivity.this, EditDoctorInfoActivity.class);
             intent.putExtra("fullnameData", fullname);

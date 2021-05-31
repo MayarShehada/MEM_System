@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.054">
 
         <TextView
-            android:id="@+id/patientText"
+            android:id="@+id/paramedicText"
             android:layout_width="329dp"
             android:layout_height="47dp"
             android:layout_marginStart="10dp"

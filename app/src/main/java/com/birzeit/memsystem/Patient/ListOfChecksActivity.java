@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,14 +42,15 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
     private RecyclerView check_recycle;
     List<Check> checkList;
 
+    public EditText searchView;
     private TextView name_txt, email_txt;
-    public String fullname, email, role;
+    public String fullname, email, role="", patientId="";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
 
-    public String URL = "http://192.168.1.28:80/MEM_System/Checks.php";
+    CheckAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +58,16 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
         setContentView(R.layout.activity_list_of_checks);
 
         setupViews();
+
+        Intent intent = getIntent();
+        fullname = intent.getStringExtra("fullnameData");
+        email = intent.getStringExtra("emailData");
+
         setupNavigation();
         updateNavHeader();
+
+        patientId = getIntent().getStringExtra("patientIdData");
+        String URL = "http://192.168.1.28:80/MEM_System/Checks.php?patientId=" +patientId;
 
         checkList = new ArrayList<>();
 
@@ -71,6 +83,36 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
             ListOfChecksActivity.DownloadTextTask runner = new DownloadTextTask();
             runner.execute(URL);
         }
+
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+    }
+
+    private void filter(String text) {
+
+        ArrayList<Check> filterList = new ArrayList<>();
+        for (Check item : checkList)
+        {
+            if (item.getDateOfCheck().toLowerCase().contains(text.toLowerCase()))
+            {
+                filterList.add(item);
+            }
+        }
+        adapter.filteredList(filterList);
     }
 
     public void setupViews() {
@@ -79,6 +121,7 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
+        searchView = findViewById(R.id.searchView);
     }
 
     public void setupNavigation(){
@@ -161,10 +204,6 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
         View headerView = navigationView.getHeaderView(0);
         name_txt = headerView.findViewById(R.id.name_txt);
         email_txt = headerView.findViewById(R.id.email_txt);
-
-        Intent intent = getIntent();
-        fullname = intent.getStringExtra("fullnameData");
-        email = intent.getStringExtra("emailData");
 
         name_txt.setText(fullname);
         email_txt.setText(email);
@@ -251,8 +290,8 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
                         String bodyTemp = objects[2];
                         String bloodPressure = objects[3];
                         String dateOfCheck = objects[4];
-
-                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck);
+                        String role=getIntent().getStringExtra("roleData");
+                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck,role);
                         checkList.add(check);
                     }
                 }

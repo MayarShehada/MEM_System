@@ -24,7 +24,7 @@ import org.json.JSONObject;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    public String username, role = "", email = "", fullname = "";
+    public String username, role = "", email = "", fullname = "", id="";
     RequestQueue requestQueue;
 
     private static int splash_time_out = 3000;
@@ -60,6 +60,7 @@ public class WelcomeActivity extends AppCompatActivity {
                             role = jsonObject.getString("role");
                             email = jsonObject.getString("email");
                             fullname = jsonObject.getString("fullname");
+                            id = jsonObject.getString("id");
 
 
                             new Handler().postDelayed(new Runnable(){
@@ -71,6 +72,7 @@ public class WelcomeActivity extends AppCompatActivity {
                                         intent.putExtra("fullnameData", fullname);
                                         intent.putExtra("roleData", role);
                                         intent.putExtra("emailData", email);
+                                        intent.putExtra("idData", id);
                                         startActivity(intent);
                                         finish();
                                     } else if (role.equals("Paramedic")) {
@@ -78,6 +80,7 @@ public class WelcomeActivity extends AppCompatActivity {
                                         intent.putExtra("fullnameData", fullname);
                                         intent.putExtra("roleData", role);
                                         intent.putExtra("emailData", email);
+                                        intent.putExtra("idData", id);
                                         startActivity(intent);
                                         finish();
                                     } else if (role.equals("Relative")) {
@@ -85,6 +88,7 @@ public class WelcomeActivity extends AppCompatActivity {
                                         intent.putExtra("fullnameData", fullname);
                                         intent.putExtra("roleData", role);
                                         intent.putExtra("emailData", email);
+                                        intent.putExtra("idData", id);
                                         startActivity(intent);
                                         finish();
                                     } else if (role.equals("Doctor")) {
@@ -92,6 +96,7 @@ public class WelcomeActivity extends AppCompatActivity {
                                         intent.putExtra("fullnameData", fullname);
                                         intent.putExtra("roleData", role);
                                         intent.putExtra("emailData", email);
+                                        intent.putExtra("idData", id);
                                         startActivity(intent);
                                         finish();
                                     }

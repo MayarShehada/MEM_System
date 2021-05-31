@@ -30,7 +30,7 @@ public class DoctorHomeActivity extends AppCompatActivity implements NavigationV
 
     public TextView name_txt, email_txt;
 
-    public String fullname="", email = "";
+    public String fullname="", email="", role="";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -99,13 +99,18 @@ public class DoctorHomeActivity extends AppCompatActivity implements NavigationV
             startActivity(intent);
             finish();
 
-        }else if(item.getItemId() == R.id.nav_listOfPatients){
-            Intent intent = new Intent(DoctorHomeActivity.this, ListOfPatientActivity.class);
+        }else if(item.getItemId() == R.id.nav_listOfPatients) {
+            Intent intent = new Intent(DoctorHomeActivity.this, ListOfPatientActivity.class);;
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
             finish();
-
+        }else if(item.getItemId() == R.id.nav_listOfParamedic){
+                Intent intent = new Intent(DoctorHomeActivity.this, ListOfParamedicActivity.class);
+                intent.putExtra("fullnameData", fullname);
+                intent.putExtra("emailData", email);
+                startActivity(intent);
+                finish();
         }else if(item.getItemId() == R.id.nav_setting){
             Intent intent = new Intent(DoctorHomeActivity.this, EditDoctorInfoActivity.class);
             intent.putExtra("fullnameData", fullname);
@@ -130,6 +135,7 @@ public class DoctorHomeActivity extends AppCompatActivity implements NavigationV
         Intent intent = getIntent();
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
+        role=intent.getStringExtra("roleData");
 
         name_txt.setText(fullname);
         email_txt.setText(email);
@@ -140,6 +146,8 @@ public class DoctorHomeActivity extends AppCompatActivity implements NavigationV
 
     public void patient_list_btn_Action(View view) {
         Intent intent = new Intent(DoctorHomeActivity.this, ListOfPatientActivity.class);
+        fullname=intent.getStringExtra("fullnameData");
+        email=intent.getStringExtra("emailData");
         intent.putExtra("fullnameData", fullname);
         intent.putExtra("emailData", email);
         startActivity(intent);

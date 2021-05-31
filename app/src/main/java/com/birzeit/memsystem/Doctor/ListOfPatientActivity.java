@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,19 +54,25 @@ public class ListOfPatientActivity extends AppCompatActivity implements Navigati
     private NavigationView navigationView;
     private Toolbar toolbar;
 
+    public EditText searchView;
+
+    PatientListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_patient);
 
-        check_recycle = findViewById(R.id.check_recycle);
-        checkList = new ArrayList<>();
+        setupViews();
 
         Intent intent = getIntent();
-        doctorName = intent.getStringExtra("fullnameData");
+        fullname = intent.getStringExtra("fullnameData");
+        email = intent.getStringExtra("emailData");
 
         setupNavigation();
         updateNavHeader();
+
+        checkList = new ArrayList<>();
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.INTERNET)
@@ -75,12 +84,50 @@ public class ListOfPatientActivity extends AppCompatActivity implements Navigati
 
         } else {
             String URL = "http://192.168.1.28:80/MEM_System/PatientsList.php?doctorname="+doctorName;
-
             ListOfPatientActivity.DownloadTextTask runner = new ListOfPatientActivity.DownloadTextTask();
             runner.execute(URL);
         }
+
+
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
     }
 
+    private void filter(String text) {
+
+        ArrayList<PatientList> filterList = new ArrayList<>();
+        for (PatientList item : checkList)
+        {
+            if (item.getFullname().toLowerCase().contains(text.toLowerCase()))
+            {
+                filterList.add(item);
+            }
+        }
+        adapter.filteredList(filterList);
+    }
+
+    public void setupViews() {
+
+        check_recycle = findViewById(R.id.check_recycle);
+        drawerLayout = findViewById(R.id.drawerlayout);
+        navigationView = findViewById(R.id.nav_menu);
+        toolbar = findViewById(R.id.toolbar);
+        searchView=findViewById(R.id.searchView);
+    }
 
     public void setupNavigation(){
         //ToolBar
@@ -97,7 +144,7 @@ public class ListOfPatientActivity extends AppCompatActivity implements Navigati
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_listOfChecks);
+        navigationView.setCheckedItem(R.id.nav_listOfPatients);
     }
 
     @Override
@@ -131,7 +178,12 @@ public class ListOfPatientActivity extends AppCompatActivity implements Navigati
             intent.putExtra("emailData", email);
             startActivity(intent);
             finish();
-
+        }else if(item.getItemId() == R.id.nav_listOfParamedic){
+            Intent intent = new Intent(ListOfPatientActivity.this, ListOfParamedicActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
         }else if(item.getItemId() == R.id.nav_setting){
             Intent intent = new Intent(ListOfPatientActivity.this, EditDoctorInfoActivity.class);
             intent.putExtra("fullnameData", fullname);
@@ -239,17 +291,23 @@ public class ListOfPatientActivity extends AppCompatActivity implements Navigati
                         String phonenum = objects[3];
                         String gender = objects[4];
                         String address = objects[5];
-                        String relative1 = objects[6];
-                        String relative2 = objects[7];
+                        String iotip = objects[6];
+                        String iotmacadd = objects[7];
+                        String relative1 = objects[8];
+                        String relative2 = objects[9];
 
-                        list = new PatientList(patientid, fullname, email, phonenum, gender, address, relative1, relative2);
+                        list = new PatientList(patientid, fullname, email, phonenum, gender, address, iotip, iotmacadd, relative1, relative2);
                         checkList.add(list);
                     }
                 }
             }
 
+            Intent intent = new Intent(ListOfPatientActivity.this, PatientInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+
             check_recycle.setLayoutManager(new LinearLayoutManager(ListOfPatientActivity.this));
-            PatientListAdapter adapter = new PatientListAdapter(ListOfPatientActivity.this, checkList);
+            adapter = new PatientListAdapter(ListOfPatientActivity.this, checkList);
             check_recycle.setAdapter(adapter);
         }
     }

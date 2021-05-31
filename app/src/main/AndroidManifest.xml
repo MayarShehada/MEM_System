@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MEMSystem"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Doctor.CheckInfoActivity"></activity>
+        <activity android:name=".Doctor.DoctorListOfChecksActivity"></activity>
+        <activity android:name=".Doctor.ListOfParamedicActivity" />
+        <activity android:name=".Doctor.CheckInfoActivity" />
         <activity android:name=".Doctor.PatientInfoActivity" />
         <activity android:name=".Patient.LastCheckActivity" />
         <activity android:name=".Relative.EditRelativeInfoActivity" />

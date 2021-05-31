@@ -7,13 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.birzeit.memsystem.CheckActivity;
 import com.birzeit.memsystem.Models.Check;
 import com.birzeit.memsystem.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CheckAdapter  extends RecyclerView.Adapter<CheckAdapter.ViewHolder>{
@@ -35,11 +38,22 @@ public class CheckAdapter  extends RecyclerView.Adapter<CheckAdapter.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CheckAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Check check = checks.get(position);
         CardView cardView = holder.cardView;
+
+
+
+        if(check.getRole().equals("Doctor")){
+            holder.mainLayout.setBackgroundResource(R.drawable.box3);
+        }else
+        {
+            holder.mainLayout.setBackgroundResource(R.drawable.box2);
+
+        }
         TextView txt = cardView.findViewById(R.id.checkText);
         txt.setText(check.getDateOfCheck());
+
 
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +65,8 @@ public class CheckAdapter  extends RecyclerView.Adapter<CheckAdapter.ViewHolder>
                 intent.putExtra("bodyTemp_data",check.getBodyTemp());
                 intent.putExtra("bloodPressure_data",check.getBloodPressure());
                 intent.putExtra("dateOfCheck_data",check.getDateOfCheck());
+//                intent.putExtra("Doctor_NameData",check.getDoctor_fullName());
+//                intent.putExtra("Doctor_EmailData",check.getDoctor_email());
 
                 context.startActivity(intent);
             }
@@ -61,6 +77,11 @@ public class CheckAdapter  extends RecyclerView.Adapter<CheckAdapter.ViewHolder>
     @Override
     public int getItemCount() {
         return checks.size();
+    }
+
+    public void filteredList(ArrayList<Check> filterList) {
+        checks = filterList;
+        notifyDataSetChanged();
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder {

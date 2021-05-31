@@ -1,25 +1,25 @@
 package com.birzeit.memsystem.Doctor;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.birzeit.memsystem.Models.Doctor;
+import com.birzeit.memsystem.Adapter.PatientListAdapter;
+import com.birzeit.memsystem.Models.PatientList;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -31,11 +31,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
+import java.util.List;
 
-public class DoctorProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ListOfParamedicActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    public TextView prof_name_txt, prof_email_txt, prof_username_txt, prof_phone_txt, prof_gender_txt, prof_specialty_txt , prof_employeeid_txt;
+    private RecyclerView check_recycle;
+    List<PatientList> checkList;
+    String doctorName = "";
+
     public TextView name_txt, email_txt;
 
     public String fullname="", email = "";
@@ -44,47 +47,78 @@ public class DoctorProfileActivity extends AppCompatActivity implements Navigati
     private NavigationView navigationView;
     private Toolbar toolbar;
 
+    public EditText searchView;
+
+    PatientListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doctor_profile);
-        setupViews();
+        setContentView(R.layout.activity_list_of_paramedic);
 
-        Intent intent = getIntent();
-        fullname = intent.getStringExtra("fullnameData");
-        email = intent.getStringExtra("emailData");
-
-        setupNavigation();
-        updateNavHeader();
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.INTERNET},
-                    123);
-
-        } else {
-            String URL = "http://192.168.1.28:80/MEM_System/DoctorProfile.php?email="+email;
-            DoctorProfileActivity.DownloadTextTask runner = new DownloadTextTask();
-            runner.execute(URL);
-        }
+//        setupViews();
+//
+//        Intent intent = getIntent();
+//        doctorName = intent.getStringExtra("fullnameData");
+//
+//        setupNavigation();
+//        updateNavHeader();
+//
+//        checkList = new ArrayList<>();
+//
+//        if (ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.INTERNET)
+//                != PackageManager.PERMISSION_GRANTED) {
+//
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.INTERNET},
+//                    123);
+//
+//        } else {
+//            String URL = "http://192.168.1.28:80/MEM_System/ParamedicList.php";
+//            ListOfParamedicActivity.DownloadTextTask runner = new ListOfParamedicActivity.DownloadTextTask();
+//            runner.execute(URL);
+//        }
+//
+//
+//        searchView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                filter(s.toString());
+//            }
+//        });
+//    }
+//
+//    private void filter(String text) {
+//
+//        ArrayList<PatientList> filterList = new ArrayList<>();
+//        for (PatientList item : checkList)
+//        {
+//            if (item.getFullname().toLowerCase().contains(text.toLowerCase()))
+//            {
+//                filterList.add(item);
+//            }
+//        }
+//        adapter.filteredList(filterList);
     }
 
-    private void setupViews() {
-        prof_name_txt = findViewById(R.id.prof_name_txt);
-        prof_email_txt = findViewById(R.id.prof_email_txt);
-        prof_username_txt = findViewById(R.id.prof_username_txt);
-        prof_phone_txt = findViewById(R.id.prof_phone_txt);
-        prof_gender_txt = findViewById(R.id.prof_gender_txt);
-        prof_specialty_txt = findViewById(R.id.prof_specialty_txt);
-        prof_employeeid_txt = findViewById(R.id.prof_employeeid_txt);
+    public void setupViews() {
 
+        check_recycle = findViewById(R.id.check_recycle);
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
-
+        searchView=findViewById(R.id.searchView);
     }
 
     public void setupNavigation(){
@@ -92,7 +126,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements Navigati
         setSupportActionBar(toolbar);
 
         //NavigationDrawer Menu
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(DoctorProfileActivity.this,
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(ListOfParamedicActivity.this,
                 drawerLayout,
                 toolbar,
                 R.string.open,
@@ -102,7 +136,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements Navigati
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_listOfChecks);
+        navigationView.setCheckedItem(R.id.nav_listOfPatients);
     }
 
     @Override
@@ -117,33 +151,33 @@ public class DoctorProfileActivity extends AppCompatActivity implements Navigati
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
 
-            Intent intent = new Intent(DoctorProfileActivity.this, DoctorHomeActivity.class);
+            Intent intent = new Intent(ListOfParamedicActivity.this, DoctorHomeActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
             finish();
 
         }else if(item.getItemId() == R.id.nav_profile) {
-            Intent intent = new Intent(DoctorProfileActivity.this, DoctorProfileActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            startActivity(intent);
-            finish();
-        }else if(item.getItemId() == R.id.nav_listOfParamedic){
-            Intent intent = new Intent(DoctorProfileActivity.this, ListOfParamedicActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            startActivity(intent);
-            finish();
-        }else if(item.getItemId() == R.id.nav_listOfPatients){
-            Intent intent = new Intent(DoctorProfileActivity.this, ListOfPatientActivity.class);
+            Intent intent = new Intent(ListOfParamedicActivity.this, DoctorProfileActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
             finish();
 
+        }else if(item.getItemId() == R.id.nav_listOfPatients){
+            Intent intent = new Intent(ListOfParamedicActivity.this, ListOfPatientActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+        }else if(item.getItemId() == R.id.nav_listOfParamedic){
+            Intent intent = new Intent(ListOfParamedicActivity.this, ListOfParamedicActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
         }else if(item.getItemId() == R.id.nav_setting){
-            Intent intent = new Intent(DoctorProfileActivity.this, EditDoctorInfoActivity.class);
+            Intent intent = new Intent(ListOfParamedicActivity.this, EditDoctorInfoActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
@@ -222,6 +256,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements Navigati
         }
         return str;
     }
+
     private class DownloadTextTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
@@ -232,39 +267,40 @@ public class DoctorProfileActivity extends AppCompatActivity implements Navigati
         protected void onPostExecute(String s) {
 
 
-            ArrayList<Doctor> list = new ArrayList<>();
-
             String obj[] = s.split("////");
+            PatientList list;
+            for(int i = 0 ; i < obj.length ; i++)
+            {
 
-            for (int i = 0; i < obj.length; i++) {
-
-                if (!obj[i].equals(null)) {
+                if(! obj[i].equals(null)) {
                     String objects[] = obj[i].split(",");
 
-                    if (!objects.equals(null)) {
+                    if(!objects.equals(null)) {
 
-                        String fullName = objects[0];
-                        String userName = objects[1];
+                        int patientid = Integer.parseInt(objects[0]);
+                        String fullname = objects[1];
                         String email = objects[2];
-                        String phone = objects[3];
+                        String phonenum = objects[3];
                         String gender = objects[4];
-                        String employeeId = objects[5];
-                        String specialty = objects[6];
+                        String address = objects[5];
+                        String iotip = objects[6];
+                        String iotmacadd = objects[7];
+                        String relative1 = objects[8];
+                        String relative2 = objects[9];
 
-                        Doctor doctor = new Doctor(fullName, userName, email, phone, gender, employeeId,specialty);
-                        list.add(doctor);
+                        list = new PatientList(patientid, fullname, email, phonenum, gender, address, iotip, iotmacadd, relative1, relative2);
+                        checkList.add(list);
                     }
                 }
             }
 
-            prof_name_txt.setText(list.get(0).getFullName());
-            prof_email_txt.setText(list.get(0).getEmail());
-            prof_username_txt.setText(list.get(0).getUserName());
-            prof_phone_txt.setText(list.get(0).getPhoneNum());
-            prof_gender_txt.setText(list.get(0).getGender());
-            prof_specialty_txt.setText(list.get(0).getSpecialty());
-            prof_employeeid_txt.setText(list.get(0).getEmployeeId());
+            Intent intent = new Intent(ListOfParamedicActivity.this, PatientInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
 
+            check_recycle.setLayoutManager(new LinearLayoutManager(ListOfParamedicActivity.this));
+            adapter = new PatientListAdapter(ListOfParamedicActivity.this, checkList);
+            check_recycle.setAdapter(adapter);
         }
     }
 }
