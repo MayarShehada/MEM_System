@@ -12,8 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.birzeit.memsystem.CheckActivity;
+import com.birzeit.memsystem.Doctor.CheckInfoActivity;
 import com.birzeit.memsystem.Models.Check;
+import com.birzeit.memsystem.Patient.CheckActivity;
 import com.birzeit.memsystem.R;
 
 import java.util.ArrayList;
@@ -43,34 +44,54 @@ public class CheckAdapter  extends RecyclerView.Adapter<CheckAdapter.ViewHolder>
         CardView cardView = holder.cardView;
 
 
-
-        if(check.getRole().equals("Doctor")){
-            holder.mainLayout.setBackgroundResource(R.drawable.box3);
-        }else
-        {
-            holder.mainLayout.setBackgroundResource(R.drawable.box2);
-
-        }
         TextView txt = cardView.findViewById(R.id.checkText);
         txt.setText(check.getDateOfCheck());
 
 
-        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CheckActivity.class);
 
-                intent.putExtra("checkId_data", check.getCheckId());
-                intent.putExtra("heartBeat_data",check.getHeartBeat());
-                intent.putExtra("bodyTemp_data",check.getBodyTemp());
-                intent.putExtra("bloodPressure_data",check.getBloodPressure());
-                intent.putExtra("dateOfCheck_data",check.getDateOfCheck());
-//                intent.putExtra("Doctor_NameData",check.getDoctor_fullName());
-//                intent.putExtra("Doctor_EmailData",check.getDoctor_email());
+        if(check.getRole().equals("Doctor")){
+            holder.mainLayout.setBackgroundResource(R.drawable.box3);
+            holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CheckInfoActivity.class);
 
-                context.startActivity(intent);
-            }
-        });
+                    intent.putExtra("checkId_data", check.getCheckId());
+                    intent.putExtra("heartBeat_data",check.getHeartBeat());
+                    intent.putExtra("bodyTemp_data",check.getBodyTemp());
+                    intent.putExtra("bloodPressure_data",check.getBloodPressure());
+                    intent.putExtra("dateOfCheck_data",check.getDateOfCheck());
+                    intent.putExtra("fullnameData",check.getFullname());
+                    intent.putExtra("emailData",check.getEmail());
+
+                    context.startActivity(intent);
+                }
+            });
+
+        }else
+        {
+            holder.mainLayout.setBackgroundResource(R.drawable.box2);
+            holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CheckActivity.class);
+
+                    intent.putExtra("checkId_data", check.getCheckId());
+                    intent.putExtra("heartBeat_data",check.getHeartBeat());
+                    intent.putExtra("bodyTemp_data",check.getBodyTemp());
+                    intent.putExtra("bloodPressure_data",check.getBloodPressure());
+                    intent.putExtra("dateOfCheck_data",check.getDateOfCheck());
+                    intent.putExtra("fullnameData",check.getFullname());
+                    intent.putExtra("emailData",check.getEmail());
+
+                    context.startActivity(intent);
+                }
+            });
+
+
+        }
+
+
 
     }
 

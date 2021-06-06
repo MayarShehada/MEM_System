@@ -63,12 +63,12 @@ public class ListOfPatientActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_patient);
 
-        setupViews();
-
         Intent intent = getIntent();
+        doctorName = intent.getStringExtra("fullnameData");
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
 
+        setupViews();
         setupNavigation();
         updateNavHeader();
 
@@ -286,8 +286,8 @@ public class ListOfPatientActivity extends AppCompatActivity implements Navigati
                     if(!objects.equals(null)) {
 
                         int patientid = Integer.parseInt(objects[0]);
-                        String fullname = objects[1];
-                        String email = objects[2];
+                        String pfullname = objects[1];
+                        String pemail = objects[2];
                         String phonenum = objects[3];
                         String gender = objects[4];
                         String address = objects[5];
@@ -296,7 +296,7 @@ public class ListOfPatientActivity extends AppCompatActivity implements Navigati
                         String relative1 = objects[8];
                         String relative2 = objects[9];
 
-                        list = new PatientList(patientid, fullname, email, phonenum, gender, address, iotip, iotmacadd, relative1, relative2);
+                        list = new PatientList(patientid, pfullname, pemail, phonenum, gender, address, iotip, iotmacadd, relative1, relative2, fullname, email);
                         checkList.add(list);
                     }
                 }

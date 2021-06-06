@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MEMSystem"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".Doctor.DoctorListOfChecksActivity"></activity>
         <activity android:name=".Doctor.ListOfParamedicActivity" />
         <activity android:name=".Doctor.CheckInfoActivity" />
@@ -33,7 +34,7 @@
         <activity android:name=".Relative.RelativeHomeActivity" />
         <activity android:name=".Paramedic.ParamedicHomeActivity" />
         <activity android:name=".Doctor.DoctorHomeActivity" />
-        <activity android:name=".CheckActivity" />
+        <activity android:name=".Patient.CheckActivity" />
         <activity android:name=".Patient.PatientHomeActivity" />
         <activity android:name=".Paramedic.ParamedicRegisterActivity" />
         <activity android:name=".Relative.RelativeRegisterActivity" />

@@ -42,6 +42,7 @@ import java.util.List;
 
 public class DoctorListOfChecksActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+
     private RecyclerView check_recycle;
     List<Check> checkList;
 
@@ -58,12 +59,11 @@ public class DoctorListOfChecksActivity extends AppCompatActivity implements Nav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_checks2);
-
-        patientId = getIntent().getStringExtra("patientId_data");
+        patientId=getIntent().getStringExtra("patientId_data");
         String URL = "http://192.168.1.28:80/MEM_System/Checks.php?patientId=" +patientId;
-     setupViews();
-//        setupNavigation();
-//        updateNavHeader();
+        setupViews();
+        setupNavigation();
+        updateNavHeader();
 
         checkList = new ArrayList<>();
 
@@ -116,7 +116,7 @@ public class DoctorListOfChecksActivity extends AppCompatActivity implements Nav
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
-        searchView = findViewById(R.id.searchView);
+        searchView=findViewById(R.id.searchView);
     }
 
     public void setupNavigation(){
@@ -134,7 +134,7 @@ public class DoctorListOfChecksActivity extends AppCompatActivity implements Nav
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_listOfPatients);
+        navigationView.setCheckedItem(R.id.nav_listOfChecks);
     }
 
     @Override
@@ -145,7 +145,6 @@ public class DoctorListOfChecksActivity extends AppCompatActivity implements Nav
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
@@ -188,6 +187,8 @@ public class DoctorListOfChecksActivity extends AppCompatActivity implements Nav
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 
     public void updateNavHeader() {
@@ -288,7 +289,7 @@ public class DoctorListOfChecksActivity extends AppCompatActivity implements Nav
                         String bloodPressure = objects[3];
                         String dateOfCheck = objects[4];
 
-                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck,"Doctor");
+                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck,"Doctor",fullname,email);
                         checkList.add(check);
                     }
                 }

@@ -291,7 +291,7 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
                         String bloodPressure = objects[3];
                         String dateOfCheck = objects[4];
                         String role=getIntent().getStringExtra("roleData");
-                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck,role);
+                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck,"Patient",fullname,email);
                         checkList.add(check);
                     }
                 }

@@ -288,8 +288,8 @@ public class ListOfParamedicActivity extends AppCompatActivity implements Naviga
                         String relative1 = objects[8];
                         String relative2 = objects[9];
 
-                        list = new PatientList(patientid, fullname, email, phonenum, gender, address, iotip, iotmacadd, relative1, relative2);
-                        checkList.add(list);
+                        //list = new PatientList(patientid, fullname, email, phonenum, gender, address, iotip, iotmacadd, relative1, relative2);
+                        //checkList.add(list);
                     }
                 }
             }

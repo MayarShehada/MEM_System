@@ -146,12 +146,9 @@ public class DoctorHomeActivity extends AppCompatActivity implements NavigationV
 
     public void patient_list_btn_Action(View view) {
         Intent intent = new Intent(DoctorHomeActivity.this, ListOfPatientActivity.class);
-        fullname=intent.getStringExtra("fullnameData");
-        email=intent.getStringExtra("emailData");
         intent.putExtra("fullnameData", fullname);
         intent.putExtra("emailData", email);
         startActivity(intent);
         finish();
-
     }
 }
