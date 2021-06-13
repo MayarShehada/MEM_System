@@ -110,7 +110,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_listOfChecks);
+        navigationView.setCheckedItem(R.id.nav_profile);
     }
 
     @Override
@@ -125,8 +125,14 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
-
             Intent intent = new Intent(PatientProfileActivity.this, PatientHomeActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+
+        }else if(item.getItemId() == R.id.nav_makeCheck){
+            Intent intent = new Intent(PatientProfileActivity.this, MakeCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
@@ -139,8 +145,15 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             startActivity(intent);
             finish();
 
-        } else if(item.getItemId() == R.id.nav_listOfChecks){
+        }else if(item.getItemId() == R.id.nav_listOfChecks){
             Intent intent = new Intent(PatientProfileActivity.this, ListOfChecksActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+
+        }else if(item.getItemId() == R.id.nav_listOfEmergency){
+            Intent intent = new Intent(PatientProfileActivity.this, ListOfEmergencyActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
@@ -161,6 +174,11 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
+            Intent intent = new Intent(PatientProfileActivity.this, EditPatientInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
 

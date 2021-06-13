@@ -43,11 +43,8 @@ public class CheckAdapter  extends RecyclerView.Adapter<CheckAdapter.ViewHolder>
         Check check = checks.get(position);
         CardView cardView = holder.cardView;
 
-
         TextView txt = cardView.findViewById(R.id.checkText);
         txt.setText(check.getDateOfCheck());
-
-
 
         if(check.getRole().equals("Doctor")){
             holder.mainLayout.setBackgroundResource(R.drawable.box3);
@@ -87,12 +84,7 @@ public class CheckAdapter  extends RecyclerView.Adapter<CheckAdapter.ViewHolder>
                     context.startActivity(intent);
                 }
             });
-
-
         }
-
-
-
     }
 
     @Override

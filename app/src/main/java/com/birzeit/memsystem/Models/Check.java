@@ -8,29 +8,23 @@ public class Check {
     private String bloodPressure;
     private String dateOfCheck;
     private String role;
+    private String flag;
     private String fullname;
     private String email;
+
     public Check() {
     }
 
-
-    public Check(int checkId, String heartBeat, String bodyTemp, String bloodPressure, String dateOfCheck, String role, String fullname, String email) {
+    public Check(int checkId, String heartBeat, String bodyTemp, String bloodPressure, String dateOfCheck, String role, String flag, String fullname, String email) {
         this.checkId = checkId;
         this.heartBeat = heartBeat;
         this.bodyTemp = bodyTemp;
         this.bloodPressure = bloodPressure;
         this.dateOfCheck = dateOfCheck;
         this.role = role;
+        this.flag = flag;
         this.fullname = fullname;
         this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public int getCheckId() {
@@ -73,6 +67,22 @@ public class Check {
         this.dateOfCheck = dateOfCheck;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
     public String getFullname() {
         return fullname;
     }
@@ -87,19 +97,5 @@ public class Check {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "Check{" +
-                "checkId=" + checkId +
-                ", heartBeat='" + heartBeat + '\'' +
-                ", bodyTemp='" + bodyTemp + '\'' +
-                ", bloodPressure='" + bloodPressure + '\'' +
-                ", dateOfCheck='" + dateOfCheck + '\'' +
-                ", role='" + role + '\'' +
-                ", fullname='" + fullname + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

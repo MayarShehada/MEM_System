@@ -54,7 +54,37 @@
                                     android:layout_alignParentStart="true"
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentBottom="true"
-                                    android:src="@drawable/patient" />
+                                    android:src="@drawable/makecheck" />
+
+                                <TextView
+                                    android:layout_width="266dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginStart="138dp"
+                                    android:gravity="center"
+                                    android:onClick="make_check_BtnAction"
+                                    android:text="@string/make_a_check"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/Gray2"/>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="91dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/box2">
+
+                                <ImageView
+                                    android:layout_width="138dp"
+                                    android:layout_height="155dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:src="@drawable/lastcheck" />
 
                                 <TextView
                                     android:layout_width="266dp"
@@ -84,7 +114,7 @@
                                     android:layout_alignParentStart="true"
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentBottom="true"
-                                    android:src="@drawable/ambulance" />
+                                    android:src="@drawable/listofcheck" />
 
                                 <TextView
                                     android:layout_width="266dp"
@@ -114,7 +144,7 @@
                                     android:layout_alignParentStart="true"
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentBottom="true"
-                                    android:src="@drawable/patient" />
+                                    android:src="@drawable/emergencylist" />
 
                                 <TextView
                                     android:layout_width="266dp"
@@ -125,8 +155,8 @@
                                     android:layout_alignParentBottom="true"
                                     android:layout_marginStart="138dp"
                                     android:gravity="center"
-                                    android:onClick="normal_case_btn_Action"
-                                    android:text="@string/normal_case"
+                                    android:onClick="emergency_cases_BtnAction"
+                                    android:text="@string/list_of_emergency_cases"
                                     android:textSize="18sp"
                                     android:textColor="@color/Gray2"/>
 

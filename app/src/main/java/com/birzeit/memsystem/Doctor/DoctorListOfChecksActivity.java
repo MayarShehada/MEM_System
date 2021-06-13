@@ -288,8 +288,8 @@ public class DoctorListOfChecksActivity extends AppCompatActivity implements Nav
                         String bodyTemp = objects[2];
                         String bloodPressure = objects[3];
                         String dateOfCheck = objects[4];
-
-                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck,"Doctor",fullname,email);
+                        String role = objects[5];
+                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck,"Doctor", role,fullname,email);
                         checkList.add(check);
                     }
                 }

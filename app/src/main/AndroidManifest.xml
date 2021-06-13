@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +17,14 @@
         android:theme="@style/Theme.MEMSystem"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".Doctor.DoctorListOfChecksActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBPss9LuTm4tFQY8bKrTmJPnRUhDpPQOlc"/>
+
+        <activity android:name=".Paramedic.MapActivity"></activity>
+        <activity android:name=".Patient.ListOfEmergencyActivity" />
+        <activity android:name=".Patient.MakeCheckActivity" />
+        <activity android:name=".Doctor.DoctorListOfChecksActivity" />
         <activity android:name=".Doctor.ListOfParamedicActivity" />
         <activity android:name=".Doctor.CheckInfoActivity" />
         <activity android:name=".Doctor.PatientInfoActivity" />

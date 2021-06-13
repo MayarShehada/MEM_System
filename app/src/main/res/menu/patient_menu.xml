@@ -7,13 +7,23 @@
             android:icon="@drawable/ic_home"
             android:title="@string/home" />
         <item
+            android:id="@+id/nav_makeCheck"
+            android:icon="@drawable/ic_check"
+            android:title="@string/make_a_check" />
+        <item
             android:id="@+id/nav_lastCheck"
-            android:icon="@drawable/ic_check_list"
+            android:icon="@drawable/lastcheck"
             android:title="@string/last_check_details" />
         <item
             android:id="@+id/nav_listOfChecks"
             android:icon="@drawable/ic_check_list"
             android:title="@string/list_of_checks" />
+
+        <item
+            android:id="@+id/nav_listOfEmergency"
+            android:icon="@drawable/emergencylist"
+            android:title="@string/list_of_emergency_cases" />
+
         <item
             android:id="@+id/nav_normalCase"
             android:icon="@drawable/ic_normal_case"

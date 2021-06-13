@@ -67,7 +67,7 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
         updateNavHeader();
 
         patientId = getIntent().getStringExtra("patientIdData");
-        String URL = "http://192.168.1.28:80/MEM_System/Checks.php?patientId=" +patientId;
+        String URL = "http://192.168.1.28:80/MEM_System/Checks.php?patientId=" + patientId;
 
         checkList = new ArrayList<>();
 
@@ -290,8 +290,9 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
                         String bodyTemp = objects[2];
                         String bloodPressure = objects[3];
                         String dateOfCheck = objects[4];
+                        String flag = objects[5];
                         String role=getIntent().getStringExtra("roleData");
-                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck,"Patient",fullname,email);
+                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck, role, flag,fullname,email);
                         checkList.add(check);
                     }
                 }

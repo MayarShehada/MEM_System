@@ -88,7 +88,7 @@ public class ParamedicHomeActivity extends AppCompatActivity implements Navigati
             finish();
 
         }else if(item.getItemId() == R.id.nav_map){
-            Intent intent = new Intent(ParamedicHomeActivity.this, ParamedicHomeActivity.class);
+            Intent intent = new Intent(ParamedicHomeActivity.this, MapActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
@@ -102,6 +102,11 @@ public class ParamedicHomeActivity extends AppCompatActivity implements Navigati
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
+            Intent intent = new Intent(ParamedicHomeActivity.this, EditParamedicInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
 
@@ -126,6 +131,11 @@ public class ParamedicHomeActivity extends AppCompatActivity implements Navigati
     }
 
     public void map_btn_Action(View view) {
+        Intent intent = new Intent(ParamedicHomeActivity.this, MapActivity.class);
+        intent.putExtra("fullnameData", fullname);
+        intent.putExtra("emailData", email);
+        startActivity(intent);
+        finish();
     }
 
     public void tracking_btn_Action(View view) {

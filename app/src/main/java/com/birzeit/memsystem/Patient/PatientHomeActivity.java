@@ -81,7 +81,6 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
-
             Intent intent = new Intent(PatientHomeActivity.this, PatientHomeActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
@@ -89,16 +88,17 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
             startActivity(intent);
             finish();
 
+        }else if(item.getItemId() == R.id.nav_makeCheck){
+            LoadData(MakeCheckActivity.class);
+
         }else if(item.getItemId() == R.id.nav_lastCheck){
-            Intent intent = new Intent(PatientHomeActivity.this, LastCheckActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            startActivity(intent);
-            finish();
+            LoadData(LastCheckActivity.class);
 
         }else if(item.getItemId() == R.id.nav_listOfChecks){
-            LoadData();
+            LoadData(ListOfChecksActivity.class);
+
+        }else if(item.getItemId() == R.id.nav_listOfEmergency){
+            LoadData(ListOfEmergencyActivity.class);
 
         }else if(item.getItemId() == R.id.nav_normalCase){
             Intent intent = new Intent(PatientHomeActivity.this, NormalCaseActivity.class);
@@ -117,6 +117,12 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
+            Intent intent = new Intent(PatientHomeActivity.this, EditPatientInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
 
@@ -141,34 +147,24 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
         email_txt.setText(email);
     }
 
-    public void last_check_details_btn_Action(View view) {
-        Intent intent = new Intent(PatientHomeActivity.this, LastCheckActivity.class);
-        intent.putExtra("fullnameData", fullname);
-        intent.putExtra("emailData", email);
-        intent.putExtra("roleData",role);
-        startActivity(intent);
-        finish();
+    public void make_check_BtnAction(View view) {
+        LoadData(MakeCheckActivity.class);
     }
+
+    public void last_check_details_btn_Action(View view) { LoadData(LastCheckActivity.class);}
 
     public void list_of_checks_btn_Action(View view) {
-        LoadData();
+        LoadData(ListOfChecksActivity.class);
     }
 
-
-    public void normal_case_btn_Action(View view) {
-        Intent intent = new Intent(PatientHomeActivity.this, NormalCaseActivity.class);
-        intent.putExtra("fullnameData", fullname);
-        intent.putExtra("emailData", email);
-        intent.putExtra("roleData",role);
-        startActivity(intent);
-        finish();
+    public void emergency_cases_BtnAction(View view) {
+        LoadData(ListOfEmergencyActivity.class);
     }
 
-    public void LoadData()
+    public void LoadData(Class activity)
     {
         String cat = getIntent().getStringExtra("fullnameData");
         String url = "http://192.168.1.28:80/MEM_System/getID.php?fullname="+cat;
-
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url,
@@ -185,7 +181,7 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
                             for(int i = 0; i<array.length(); i++){
                                 JSONObject obj = array.getJSONObject(i);
                                 patientId  = obj.getString("id");
-                                Intent intent = new Intent(PatientHomeActivity.this, ListOfChecksActivity.class);
+                                Intent intent = new Intent(PatientHomeActivity.this, activity);
                                 intent.putExtra("fullnameData", fullname);
                                 intent.putExtra("emailData", email);
                                 intent.putExtra("roleData",role);
@@ -197,15 +193,12 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
-
                     }
                 });
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);

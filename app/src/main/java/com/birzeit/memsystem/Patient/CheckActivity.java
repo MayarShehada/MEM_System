@@ -79,6 +79,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
         bloodPressure_txt.setText(bloodPressure);
         dateOfCheck_txt.setText(dateOfCheck);
     }
+
     public void setupNavigation(){
         //ToolBar
         setSupportActionBar(toolbar);
@@ -107,11 +108,16 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
-
             Intent intent = new Intent(CheckActivity.this, PatientHomeActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
 
+        }else if(item.getItemId() == R.id.nav_makeCheck){
+            Intent intent = new Intent(CheckActivity.this, MakeCheckActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
             startActivity(intent);
             finish();
 
@@ -119,18 +125,27 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, LastCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
-
             startActivity(intent);
             finish();
 
         }else if(item.getItemId() == R.id.nav_listOfChecks){
-            LoadData();
+            Intent intent = new Intent(CheckActivity.this, ListOfChecksActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+
+        }else if(item.getItemId() == R.id.nav_listOfEmergency){
+            Intent intent = new Intent(CheckActivity.this, ListOfEmergencyActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_normalCase){
             Intent intent = new Intent(CheckActivity.this, NormalCaseActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
-
             startActivity(intent);
             finish();
 
@@ -138,11 +153,15 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, PatientProfileActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
-
             startActivity(intent);
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
+            Intent intent = new Intent(CheckActivity.this, EditPatientInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
 
@@ -199,8 +218,6 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 }, new Response.ErrorListener() {
 

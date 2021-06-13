@@ -146,6 +146,11 @@ public class ParamedicProfileActivity extends AppCompatActivity implements Navig
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
+            Intent intent = new Intent(ParamedicProfileActivity.this, EditParamedicInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
 

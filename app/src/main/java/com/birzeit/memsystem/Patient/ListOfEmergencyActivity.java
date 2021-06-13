@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -19,7 +21,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.birzeit.memsystem.Adapter.EmergencyChecksAdapter;
 import com.birzeit.memsystem.Models.Check;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
@@ -35,32 +40,39 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LastCheckActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ListOfEmergencyActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView heartBeat_txt, bodyTemp_txt, bloodPressure_txt, dateOfCheck_txt;
+    private RecyclerView check_recycle;
+    List<Check> checkList;
+
+    public EditText searchView;
     private TextView name_txt, email_txt;
-    public String fullname, email, role, patientId="";
-
-    List<Check> lastCheck;
+    public String fullname, email, role="", patientId="";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
 
+    EmergencyChecksAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_last_check);
+        setContentView(R.layout.activity_list_of_emergency);
 
         setupViews();
+
+        Intent intent = getIntent();
+        fullname = intent.getStringExtra("fullnameData");
+        email = intent.getStringExtra("emailData");
+
         setupNavigation();
         updateNavHeader();
 
         patientId = getIntent().getStringExtra("patientIdData");
-        String URL = "http://192.168.1.28/MEM_System/lastCheck.php" ;
+        String URL = "http://192.168.1.28:80/MEM_System/Checks.php?patientId=" +patientId;
 
-        lastCheck = new ArrayList<>();
+        checkList = new ArrayList<>();
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.INTERNET)
@@ -69,23 +81,50 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.INTERNET},
                     123);
+
         } else {
-            LastCheckActivity.DownloadTextTask runner = new LastCheckActivity.DownloadTextTask();
+            ListOfEmergencyActivity.DownloadTextTask runner = new ListOfEmergencyActivity.DownloadTextTask();
             runner.execute(URL);
         }
 
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+    }
+
+    private void filter(String text) {
+
+        ArrayList<Check> filterList = new ArrayList<>();
+        for (Check item : checkList)
+        {
+            if (item.getDateOfCheck().toLowerCase().contains(text.toLowerCase()))
+            {
+                filterList.add(item);
+            }
+        }
+        adapter.filteredList(filterList);
     }
 
     public void setupViews() {
 
-        heartBeat_txt = findViewById(R.id.heartBeat_txt);
-        bodyTemp_txt = findViewById(R.id.bodyTemp_txt);
-        bloodPressure_txt = findViewById(R.id.bloodPress_txt);
-        dateOfCheck_txt = findViewById(R.id.dateTime_txt);
-
+        check_recycle = findViewById(R.id.check_recycle);
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
+        searchView = findViewById(R.id.searchView);
     }
 
     public void setupNavigation(){
@@ -93,7 +132,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
 
         //NavigationDrawer Menu
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(LastCheckActivity.this,
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(ListOfEmergencyActivity.this,
                 drawerLayout,
                 toolbar,
                 R.string.open,
@@ -103,7 +142,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_lastCheck);
+        navigationView.setCheckedItem(R.id.nav_listOfEmergency);
     }
 
     @Override
@@ -115,28 +154,10 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
         }
     }
 
-    private void setupTexts(){
-
-        String heart = "";
-        String temp = "";
-        String pressure = "";
-        String date = "";
-
-        heart = lastCheck.get(0).getHeartBeat();
-        temp =  lastCheck.get(0).getBodyTemp();
-        pressure = lastCheck.get(0).getBloodPressure();
-        date = lastCheck.get(0).getDateOfCheck();
-
-        heartBeat_txt.setText(heart);
-        bodyTemp_txt.setText(temp);
-        bloodPressure_txt.setText(pressure);
-        dateOfCheck_txt.setText(date);
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
-            Intent intent = new Intent(LastCheckActivity.this, PatientHomeActivity.class);
+            Intent intent = new Intent(ListOfEmergencyActivity.this, PatientHomeActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
@@ -144,7 +165,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             finish();
 
         }else if(item.getItemId() == R.id.nav_makeCheck){
-            Intent intent = new Intent(LastCheckActivity.this, MakeCheckActivity.class);
+            Intent intent = new Intent(ListOfEmergencyActivity.this, MakeCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
@@ -152,7 +173,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             finish();
 
         }else if(item.getItemId() == R.id.nav_lastCheck){
-            Intent intent = new Intent(LastCheckActivity.this, LastCheckActivity.class);
+            Intent intent = new Intent(ListOfEmergencyActivity.this, LastCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
@@ -160,7 +181,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             finish();
 
         }else if(item.getItemId() == R.id.nav_listOfChecks){
-            Intent intent = new Intent(LastCheckActivity.this, ListOfChecksActivity.class);
+            Intent intent = new Intent(ListOfEmergencyActivity.this, ListOfChecksActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
@@ -168,7 +189,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             finish();
 
         }else if(item.getItemId() == R.id.nav_listOfEmergency){
-            Intent intent = new Intent(LastCheckActivity.this, ListOfEmergencyActivity.class);
+            Intent intent = new Intent(ListOfEmergencyActivity.this, ListOfEmergencyActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
@@ -176,7 +197,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             finish();
 
         }else if(item.getItemId() == R.id.nav_normalCase){
-            Intent intent = new Intent(LastCheckActivity.this, NormalCaseActivity.class);
+            Intent intent = new Intent(ListOfEmergencyActivity.this, NormalCaseActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
@@ -184,7 +205,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             finish();
 
         }else if(item.getItemId() == R.id.nav_profile){
-            Intent intent = new Intent(LastCheckActivity.this, PatientProfileActivity.class);
+            Intent intent = new Intent(ListOfEmergencyActivity.this, PatientProfileActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
@@ -192,7 +213,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
-            Intent intent = new Intent(LastCheckActivity.this, EditPatientInfoActivity.class);
+            Intent intent = new Intent(ListOfEmergencyActivity.this, EditPatientInfoActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
@@ -208,16 +229,10 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
 
     public void updateNavHeader() {
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_lastCheck);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_menu);
         View headerView = navigationView.getHeaderView(0);
         name_txt = headerView.findViewById(R.id.name_txt);
         email_txt = headerView.findViewById(R.id.email_txt);
-
-        Intent intent = getIntent();
-        fullname = intent.getStringExtra("fullnameData");
-        email = intent.getStringExtra("emailData");
-
-        Toast.makeText(LastCheckActivity.this, fullname + " " + email , Toast.LENGTH_LONG).show();
 
         name_txt.setText(fullname);
         email_txt.setText(email);
@@ -282,7 +297,6 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
     private class DownloadTextTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
-
             return DownloadText(strings[0]);
         }
 
@@ -306,17 +320,17 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
                         String bloodPressure = objects[3];
                         String dateOfCheck = objects[4];
                         String flag = objects[5];
-                        String patient_id = objects[6];
-                        String role = getIntent().getStringExtra("roleData");
-
-                        if(patientId.equals(patient_id)){
-                            check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck, role, flag,fullname,email);
-                            lastCheck.add(check);
-                            setupTexts();
+                        String role=getIntent().getStringExtra("roleData");
+                        if(flag.equals("1")) {
+                            check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck, role, flag, fullname, email);
+                            checkList.add(check);
                         }
                     }
                 }
             }
+            check_recycle.setLayoutManager(new LinearLayoutManager(ListOfEmergencyActivity.this));
+            EmergencyChecksAdapter adapter = new EmergencyChecksAdapter(ListOfEmergencyActivity.this, checkList);
+            check_recycle.setAdapter(adapter);
         }
     }
 }

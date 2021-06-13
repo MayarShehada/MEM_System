@@ -25,7 +25,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
     private Toolbar toolbar;
 
     private TextView name_txt, email_txt;
-    public String fullname, email;
+    public String fullname, email, role="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +72,18 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
-
             Intent intent = new Intent(NormalCaseActivity.this, PatientHomeActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            startActivity(intent);
+            finish();
+
+        }else if(item.getItemId() == R.id.nav_makeCheck){
+            Intent intent = new Intent(NormalCaseActivity.this, MakeCheckActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -83,6 +91,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             Intent intent = new Intent(NormalCaseActivity.this, LastCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -90,6 +99,15 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             Intent intent = new Intent(NormalCaseActivity.this, ListOfChecksActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            startActivity(intent);
+            finish();
+
+        }else if(item.getItemId() == R.id.nav_listOfEmergency){
+            Intent intent = new Intent(NormalCaseActivity.this, ListOfEmergencyActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -97,6 +115,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             Intent intent = new Intent(NormalCaseActivity.this, NormalCaseActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -104,10 +123,17 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             Intent intent = new Intent(NormalCaseActivity.this, PatientProfileActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
+            Intent intent = new Intent(NormalCaseActivity.this, EditPatientInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
 
