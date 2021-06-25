@@ -12,20 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.birzeit.memsystem.Models.PatientList;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class DoctorHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private RecyclerView check_recycle;
-    List<PatientList> checkList;
     String doctorName = "";
 
     public TextView name_txt, email_txt;
@@ -69,7 +63,6 @@ public class DoctorHomeActivity extends AppCompatActivity implements NavigationV
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_listOfChecks);
     }
@@ -82,6 +75,7 @@ public class DoctorHomeActivity extends AppCompatActivity implements NavigationV
             super.onBackPressed();
         }
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
@@ -142,6 +136,11 @@ public class DoctorHomeActivity extends AppCompatActivity implements NavigationV
     }
 
     public void emergency_stuff_list_btn_Action(View view) {
+        Intent intent = new Intent(DoctorHomeActivity.this, ListOfParamedicActivity.class);
+        intent.putExtra("fullnameData", fullname);
+        intent.putExtra("emailData", email);
+        startActivity(intent);
+        finish();
     }
 
     public void patient_list_btn_Action(View view) {

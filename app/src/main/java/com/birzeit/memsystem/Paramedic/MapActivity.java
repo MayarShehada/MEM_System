@@ -194,7 +194,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
             finish();
 
         }else if(item.getItemId() == R.id.nav_gpsTrack){
-            Intent intent = new Intent(MapActivity.this, ParamedicHomeActivity.class);
+            Intent intent = new Intent(MapActivity.this, GPS_TrackingActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);

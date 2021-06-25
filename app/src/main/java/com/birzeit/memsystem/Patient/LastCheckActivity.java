@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -39,7 +38,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
 
     private TextView heartBeat_txt, bodyTemp_txt, bloodPressure_txt, dateOfCheck_txt;
     private TextView name_txt, email_txt;
-    public String fullname, email, role, patientId="";
+    public String fullname, email, role = "", patientId="";
 
     List<Check> lastCheck;
 
@@ -58,7 +57,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
         updateNavHeader();
 
         patientId = getIntent().getStringExtra("patientIdData");
-        String URL = "http://192.168.1.28/MEM_System/lastCheck.php" ;
+        String URL = "http://192.168.1.28:80/MEM_System/lastCheck.php" ;
 
         lastCheck = new ArrayList<>();
 
@@ -140,6 +139,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -148,6 +148,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -156,6 +157,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -164,6 +166,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -172,6 +175,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -180,6 +184,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -188,6 +193,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -196,6 +202,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -208,7 +215,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
 
     public void updateNavHeader() {
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_lastCheck);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_menu);
         View headerView = navigationView.getHeaderView(0);
         name_txt = headerView.findViewById(R.id.name_txt);
         email_txt = headerView.findViewById(R.id.email_txt);
@@ -216,8 +223,7 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
         Intent intent = getIntent();
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
-
-        Toast.makeText(LastCheckActivity.this, fullname + " " + email , Toast.LENGTH_LONG).show();
+        role = intent.getStringExtra("roleData");
 
         name_txt.setText(fullname);
         email_txt.setText(email);

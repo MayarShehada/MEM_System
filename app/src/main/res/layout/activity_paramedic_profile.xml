@@ -42,7 +42,7 @@
                     android:background="@drawable/circle"
                     android:padding="3dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/patient_icon" />
+                    android:src="@drawable/paramedic_icon" />
 
             </RelativeLayout>
 
@@ -57,16 +57,6 @@
                 android:text="Joey Tribbiani"
                 android:textColor="@color/white"
                 android:textSize="32sp" />
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="15dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_setting" />
 
         </RelativeLayout>
 
@@ -272,7 +262,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_patient"
+        app:headerLayout="@layout/navigation_paramedic"
         app:menu="@menu/paramedic_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

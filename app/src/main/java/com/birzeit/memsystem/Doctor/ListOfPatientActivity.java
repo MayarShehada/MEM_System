@@ -291,12 +291,10 @@ public class ListOfPatientActivity extends AppCompatActivity implements Navigati
                         String phonenum = objects[3];
                         String gender = objects[4];
                         String address = objects[5];
-                        String iotip = objects[6];
-                        String iotmacadd = objects[7];
-                        String relative1 = objects[8];
-                        String relative2 = objects[9];
+                        String relative1 = objects[6];
+                        String relative2 = objects[7];
 
-                        list = new PatientList(patientid, pfullname, pemail, phonenum, gender, address, iotip, iotmacadd, relative1, relative2, fullname, email);
+                        list = new PatientList(patientid, pfullname, pemail, phonenum, gender, address, relative1, relative2, fullname, email);
                         checkList.add(list);
                     }
                 }

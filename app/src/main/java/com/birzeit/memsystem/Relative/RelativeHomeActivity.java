@@ -97,7 +97,11 @@ public class RelativeHomeActivity extends AppCompatActivity implements Navigatio
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
-
+            Intent intent = new Intent(RelativeHomeActivity.this, EditRelativeInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
         }else if(item.getItemId() == R.id.nav_logOut){
 
         }
@@ -120,6 +124,6 @@ public class RelativeHomeActivity extends AppCompatActivity implements Navigatio
         email_txt.setText(email);
     }
 
-    public void patient_list_btn_Action(View view) {
+    public void notifications_Action(View view) {
     }
 }

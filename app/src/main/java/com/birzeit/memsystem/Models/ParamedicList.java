@@ -2,14 +2,14 @@ package com.birzeit.memsystem.Models;
 
 public class ParamedicList {
 
-    private String fullname, username , email, phonenum, gender, ambulanceid, doctorname, doctoremail;
+    private String id, fullname , email, phonenum, gender, ambulanceid, doctorname, doctoremail;
 
     public ParamedicList() {
     }
 
-    public ParamedicList(String fullname, String username, String email, String phonenum, String gender, String ambulanceid, String doctorname, String doctoremail) {
+    public ParamedicList(String id, String fullname, String email, String phonenum, String gender, String ambulanceid, String doctorname, String doctoremail) {
+        this.id = id;
         this.fullname = fullname;
-        this.username = username;
         this.email = email;
         this.phonenum = phonenum;
         this.gender = gender;
@@ -18,20 +18,20 @@ public class ParamedicList {
         this.doctoremail = doctoremail;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getFullname() {
         return fullname;
     }
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {

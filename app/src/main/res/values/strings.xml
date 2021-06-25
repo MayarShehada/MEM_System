@@ -92,4 +92,10 @@
     <string name="patient_list">Patient List</string>
     <string name="make_a_check">Make a Check</string>
     <string name="list_of_emergency_cases">List of Emergency Cases</string>
+    <string name="please_put_your_finger_to_take_the_reading">Please Put your Finger to take the Reading</string>
+    <string name="start_check">Start Check</string>
+    <string name="emergency_checks_details">Emergency Checks Details</string>
+    <string name="checks_details">Checks Details</string>
+    <string name="patient_details">Patient Details</string>
+    <string name="notifications">Notifications</string>
 </resources>

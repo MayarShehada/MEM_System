@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.birzeit.memsystem.Doctor.PatientInfoActivity;
+import com.birzeit.memsystem.Doctor.PatientInfoHomeActivity;
 import com.birzeit.memsystem.Models.PatientList;
 import com.birzeit.memsystem.R;
 
@@ -50,7 +50,7 @@ public class PatientListAdapter  extends RecyclerView.Adapter<PatientListAdapter
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PatientInfoActivity.class);
+                Intent intent = new Intent(context, PatientInfoHomeActivity.class);
 
                 String id = check.getId()+"";
                 intent.putExtra("patientId_data",id);

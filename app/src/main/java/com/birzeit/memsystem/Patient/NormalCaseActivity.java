@@ -25,13 +25,14 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
     private Toolbar toolbar;
 
     private TextView name_txt, email_txt;
-    public String fullname, email, role="";
+    public String fullname, email, role = "", patientId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_case);
 
+        patientId = getIntent().getStringExtra("patientIdData");
         setupViews();
         setupNavigation();
         updateNavHeader();
@@ -76,6 +77,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -84,6 +86,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -92,6 +95,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -100,6 +104,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -108,6 +113,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -116,6 +122,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -124,6 +131,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -132,6 +140,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -152,6 +161,7 @@ public class NormalCaseActivity extends AppCompatActivity implements NavigationV
         Intent intent = getIntent();
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
+        role = intent.getStringExtra("roleData");
 
         name_txt.setText(fullname);
         email_txt.setText(email);

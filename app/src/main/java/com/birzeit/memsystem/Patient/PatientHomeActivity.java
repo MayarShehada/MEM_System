@@ -2,6 +2,8 @@ package com.birzeit.memsystem.Patient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -44,6 +46,14 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
         setupViews();
         setupNavigation();
         updateNavHeader();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.toolbar, menu);
+        return true;
     }
 
     private void setupViews() {
@@ -81,12 +91,7 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
-            Intent intent = new Intent(PatientHomeActivity.this, PatientHomeActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            startActivity(intent);
-            finish();
+            LoadData(PatientHomeActivity.class);
 
         }else if(item.getItemId() == R.id.nav_makeCheck){
             LoadData(MakeCheckActivity.class);
@@ -101,28 +106,13 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
             LoadData(ListOfEmergencyActivity.class);
 
         }else if(item.getItemId() == R.id.nav_normalCase){
-            Intent intent = new Intent(PatientHomeActivity.this, NormalCaseActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            startActivity(intent);
-            finish();
+            LoadData(NormalCaseActivity.class);
 
         }else if(item.getItemId() == R.id.nav_profile){
-            Intent intent = new Intent(PatientHomeActivity.this, PatientProfileActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            startActivity(intent);
-            finish();
+            LoadData(PatientProfileActivity.class);
 
         }else if(item.getItemId() == R.id.nav_setting){
-            Intent intent = new Intent(PatientHomeActivity.this, EditPatientInfoActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            startActivity(intent);
-            finish();
+            LoadData(EditPatientInfoActivity.class);
 
         }else if(item.getItemId() == R.id.nav_logOut){
 
@@ -141,7 +131,7 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
         Intent intent = getIntent();
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
-        role=intent.getStringExtra("roleData");
+        role = intent.getStringExtra("roleData");
 
         name_txt.setText(fullname);
         email_txt.setText(email);

@@ -43,8 +43,6 @@ import java.util.ArrayList;
 public class PatientRegisterActivity extends AppCompatActivity {
 
     public EditText address_edt;
-    public EditText iotdevice_edt;
-    public EditText iotmacadd_edt;
     public EditText relative1num_edt;
     public EditText relative2num_edt;
     public Spinner spinner;
@@ -53,8 +51,8 @@ public class PatientRegisterActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     ArrayAdapter<String> adapt;
 
-    public String fullname, username, password, email, phonenum, gender, role, address, iotIP, iotmacadd, relative1, relative2, doctorname;
-    public String URL = "http://192.168.1.124:80/MEM_System/PatientRegister.php";
+    public String fullname, username, password, email, phonenum, gender, role, address, relative1, relative2, doctorname;
+    public String URL = "http://192.168.1.28:80/MEM_System/PatientRegister.php";
 
     ArrayList<String> list = new ArrayList<>();
 
@@ -70,15 +68,11 @@ public class PatientRegisterActivity extends AppCompatActivity {
     private void setupViews() {
 
         address = "";
-        iotIP = "";
-        iotmacadd = "";
         relative1 = "";
         relative2 = "";
         doctorname = "";
 
         address_edt = findViewById(R.id.address_edt);
-        iotdevice_edt = findViewById(R.id.iotdevice_edt);
-        iotmacadd_edt = findViewById(R.id.iotmacadd_edt);
         relative1num_edt = findViewById(R.id.relative1num_edt);
         relative2num_edt = findViewById(R.id.relative2num_edt);
         requestQueue = Volley.newRequestQueue(this);
@@ -147,14 +141,12 @@ public class PatientRegisterActivity extends AppCompatActivity {
         role = intent.getStringExtra("roleData");
 
         address = address_edt.getText().toString().trim();
-        iotIP = iotdevice_edt.getText().toString().trim();
-        iotmacadd = iotmacadd_edt.getText().toString().trim();
         relative1 = relative1num_edt.getText().toString().trim();
         relative2 = relative2num_edt.getText().toString().trim();
 
         String text = "";
 
-        if (!fullname.equals("") && !email.equals("") && !phonenum.equals("") && !username.equals("") && !password.equals("") && !gender.equals("") && !role.equals("") && !address.equals("") && !iotIP.equals("") && !iotmacadd.equals("") && !relative1.equals("") && !relative2.equals("") && !doctorname.equals("")) {
+        if (!fullname.equals("") && !email.equals("") && !phonenum.equals("") && !username.equals("") && !password.equals("") && !gender.equals("") && !role.equals("") && !address.equals("") && !relative1.equals("") && !relative2.equals("") && !doctorname.equals("")) {
 
             String data = URLEncoder.encode("fullname", "UTF-8")
                     + "=" + URLEncoder.encode(fullname, "UTF-8");
@@ -179,12 +171,6 @@ public class PatientRegisterActivity extends AppCompatActivity {
 
             data += "&" +URLEncoder.encode("address", "UTF-8")
                     + "=" + URLEncoder.encode(address, "UTF-8");
-
-            data += "&" + URLEncoder.encode("iotip", "UTF-8")
-                    + "=" + URLEncoder.encode(iotIP, "UTF-8");
-
-            data += "&" + URLEncoder.encode("iotmacadd", "UTF-8")
-                    + "=" + URLEncoder.encode(iotmacadd, "UTF-8");
 
             data += "&" + URLEncoder.encode("relative1", "UTF-8")
                     + "=" + URLEncoder.encode(relative1, "UTF-8");

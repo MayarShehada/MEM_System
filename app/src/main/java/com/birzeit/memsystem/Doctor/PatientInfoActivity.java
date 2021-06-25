@@ -1,15 +1,22 @@
 package com.birzeit.memsystem.Doctor;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -18,15 +25,19 @@ import com.google.android.material.navigation.NavigationView;
 
 public class PatientInfoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    public TextView prof_name_txt, prof_email_txt, prof_phone_txt, prof_gender_txt, prof_address_txt, prof_iotIp_txt, prof_mac_txt, prof_relative1_txt, prof_relative2_txt;
+    public TextView prof_name_txt, prof_email_txt, prof_phone_txt, prof_gender_txt, prof_address_txt, prof_relative1_txt, prof_relative2_txt;
     public TextView name_txt, email_txt;
     public String pa_id, pa_name, pa_email, pa_phone, pa_gender, pa_address, pa_iotIP, pa_mac, pa_relative1, pa_relative2;
 
     public String fullname="", email = "";
 
+    public Button pCall_btn , rCall_btn , rrCall_btn ;
+
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
+    private static final int REQUEST_CALL = 1 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +62,12 @@ public class PatientInfoActivity extends AppCompatActivity implements Navigation
         prof_phone_txt = findViewById(R.id.prof_phone_txt);
         prof_gender_txt = findViewById(R.id.prof_gender_txt);
         prof_address_txt=findViewById(R.id.prof_address_txt);
-        prof_iotIp_txt = findViewById(R.id.prof_iotIp_txt);
-        prof_mac_txt = findViewById(R.id.prof_mac_txt);
         prof_relative1_txt = findViewById(R.id.prof_relative1_txt);
         prof_relative2_txt = findViewById(R.id.prof_relative2_txt);
+
+        pCall_btn=findViewById(R.id.pCall_btn);
+        rCall_btn=findViewById(R.id.rCall_btn);
+        rrCall_btn=findViewById(R.id.rrCall_btn);
 
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
@@ -71,8 +84,8 @@ public class PatientInfoActivity extends AppCompatActivity implements Navigation
         pa_phone = intent.getStringExtra("phonenum_data");
         pa_gender = intent.getStringExtra("gender_data");
         pa_address = intent.getStringExtra("address_data");
-        pa_iotIP = intent.getStringExtra("iotip_data");
-        pa_mac = intent.getStringExtra("iotmacadd_data");
+        pa_iotIP = intent.getStringExtra("iotIp_data");
+        pa_mac = intent.getStringExtra("iotMac_data");
         pa_relative1 = intent.getStringExtra("relative1_data");
         pa_relative2 = intent.getStringExtra("relative2_data");
 
@@ -81,8 +94,6 @@ public class PatientInfoActivity extends AppCompatActivity implements Navigation
         prof_phone_txt.setText(pa_phone);
         prof_gender_txt.setText(pa_gender);
         prof_address_txt.setText(pa_address);
-        prof_iotIp_txt.setText(pa_iotIP);
-        prof_mac_txt.setText(pa_mac);
         prof_relative1_txt.setText(pa_relative1);
         prof_relative2_txt.setText(pa_relative2);
     }
@@ -167,16 +178,54 @@ public class PatientInfoActivity extends AppCompatActivity implements Navigation
         email_txt.setText(email);
     }
 
-    public void check_details_btn_action(View view) {
-
-        pa_id = getIntent().getStringExtra("patientId_data");
-        pa_name = getIntent().getStringExtra("Doctor_NameData");
-        pa_email = getIntent().getStringExtra("Doctor_EmailData");
-        Intent intent = new Intent(PatientInfoActivity.this, DoctorListOfChecksActivity.class);
-        intent.putExtra("fullnameData", fullname);
-        intent.putExtra("emailData", email);
-        intent.putExtra("patientId_data", pa_id);
-        startActivity(intent);
-        finish();
+    public void call_relative2_BtnAction(View view) {
+        makePhoneCall();
     }
+
+    public void call_relative1_BtnAction(View view) {
+        makePhoneCall();
+    }
+
+    public void call_patient_BtnAction(View view) { makePhoneCall(); }
+
+    private void makePhoneCall() {
+
+        pa_phone = getIntent().getStringExtra("phonenum_data");
+        pa_relative1 = getIntent().getStringExtra("relative1_data");
+        pa_relative2 = getIntent().getStringExtra("relative2_data");
+        String number = "";
+        if(pCall_btn.isClickable())
+        {
+            number=pa_phone;
+        }else if(rCall_btn.isClickable()){
+            number=pa_relative1;
+        }else {
+            number=pa_relative2;
+        }
+        if (number.trim().length() > 0) {
+            if (ContextCompat.checkSelfPermission(PatientInfoActivity.this,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(PatientInfoActivity.this,
+                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+            } else {
+                String dial = "tel:" + number;
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            }
+        } else {
+            Toast.makeText(PatientInfoActivity.this, "Enter Phone Number", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makePhoneCall();
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }

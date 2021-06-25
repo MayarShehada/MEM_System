@@ -39,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView signup_txt;
     RequestQueue requestQueue;
     public String username, password, user;
+
+    //university port = 172.19.6.186;
     public String URL = "http://192.168.1.28:80/MEM_System/Login.php";
 
     @Override

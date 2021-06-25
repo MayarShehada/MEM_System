@@ -47,7 +47,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
 
     public EditText searchView;
     private TextView name_txt, email_txt;
-    public String fullname, email, role="", patientId="";
+    public String fullname, email, role = "", patientId="";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -65,6 +65,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
         Intent intent = getIntent();
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
+        role = intent.getStringExtra("roleData");
 
         setupNavigation();
         updateNavHeader();
@@ -161,6 +162,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -169,6 +171,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -177,6 +180,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -185,6 +189,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -193,6 +198,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -201,6 +207,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -209,6 +216,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -217,6 +225,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 

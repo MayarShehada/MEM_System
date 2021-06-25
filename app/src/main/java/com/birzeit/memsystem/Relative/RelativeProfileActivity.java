@@ -96,7 +96,7 @@ public class RelativeProfileActivity extends AppCompatActivity implements Naviga
         actionBarDrawerToggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_home);
+        navigationView.setCheckedItem(R.id.nav_profile);
     }
 
     @Override
@@ -133,6 +133,11 @@ public class RelativeProfileActivity extends AppCompatActivity implements Naviga
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
+            Intent intent = new Intent(RelativeProfileActivity.this, EditRelativeInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
 

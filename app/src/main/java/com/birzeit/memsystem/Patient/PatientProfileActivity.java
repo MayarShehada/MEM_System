@@ -36,10 +36,10 @@ import java.util.ArrayList;
 
 public class PatientProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    public TextView prof_name_txt, prof_email_txt, prof_username_txt, prof_phone_txt, prof_gender_txt, prof_address_txt, prof_iotIp_txt, prof_mac_txt, prof_relative1_txt, prof_relative2_txt, prof_docname_txt;
+    public TextView prof_name_txt, prof_email_txt, prof_username_txt, prof_phone_txt, prof_gender_txt, prof_address_txt, prof_relative1_txt, prof_relative2_txt, prof_docname_txt;
     public TextView name_txt, email_txt;
 
-    public String fullname, email = "";
+    public String fullname, email = "", patientId = "", role ="";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -56,6 +56,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
         Intent intent = getIntent();
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
+        role = intent.getStringExtra("roleData");
+        patientId = getIntent().getStringExtra("patientIdData");
 
         setupNavigation();
         updateNavHeader();
@@ -83,8 +85,6 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
         prof_phone_txt = findViewById(R.id.prof_phone_txt);
         prof_gender_txt = findViewById(R.id.prof_gender_txt);
         prof_address_txt = findViewById(R.id.prof_address_txt);
-        prof_iotIp_txt = findViewById(R.id.prof_iotIp_txt);
-        prof_mac_txt = findViewById(R.id.prof_mac_txt);
         prof_relative1_txt = findViewById(R.id.prof_relative1_txt);
         prof_relative2_txt = findViewById(R.id.prof_relative2_txt);
         prof_docname_txt = findViewById(R.id.prof_docname_txt);
@@ -128,6 +128,9 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             Intent intent = new Intent(PatientProfileActivity.this, PatientHomeActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData", patientId);
+
             startActivity(intent);
             finish();
 
@@ -135,6 +138,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             Intent intent = new Intent(PatientProfileActivity.this, MakeCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData", patientId);
             startActivity(intent);
             finish();
 
@@ -142,6 +147,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             Intent intent = new Intent(PatientProfileActivity.this, LastCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData", patientId);
             startActivity(intent);
             finish();
 
@@ -149,6 +156,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             Intent intent = new Intent(PatientProfileActivity.this, ListOfChecksActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData", patientId);
             startActivity(intent);
             finish();
 
@@ -156,6 +165,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             Intent intent = new Intent(PatientProfileActivity.this, ListOfEmergencyActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData", patientId);
             startActivity(intent);
             finish();
 
@@ -163,6 +174,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             Intent intent = new Intent(PatientProfileActivity.this, NormalCaseActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData", patientId);
             startActivity(intent);
             finish();
 
@@ -170,6 +183,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             Intent intent = new Intent(PatientProfileActivity.this, PatientProfileActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData", patientId);
             startActivity(intent);
             finish();
 
@@ -177,6 +192,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             Intent intent = new Intent(PatientProfileActivity.this, EditPatientInfoActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData", patientId);
             startActivity(intent);
             finish();
 
@@ -193,6 +210,11 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
         View headerView = navigationView.getHeaderView(0);
         name_txt = headerView.findViewById(R.id.name_txt);
         email_txt = headerView.findViewById(R.id.email_txt);
+
+        Intent intent = getIntent();
+        fullname = intent.getStringExtra("fullnameData");
+        email = intent.getStringExtra("emailData");
+        role = intent.getStringExtra("roleData");
 
         name_txt.setText(fullname);
         email_txt.setText(email);
@@ -281,13 +303,11 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
                         String phone = objects[3];
                         String gender = objects[4];
                         String address = objects[5];
-                        String iotIp = objects[6];
-                        String iotmacadd = objects[7];
-                        String relative1 = objects[8];
-                        String relative2 = objects[9];
-                        String doctorName = objects[10];
+                        String relative1 = objects[6];
+                        String relative2 = objects[7];
+                        String doctorName = objects[8];
 
-                        Patient patient = new Patient(fullname, userName, email, phone, gender, address, iotIp, iotmacadd, relative1, relative2, doctorName);
+                        Patient patient = new Patient(fullname, userName, email, phone, gender, address, relative1, relative2, doctorName);
                         list.add(patient);
                     }
                 }
@@ -299,8 +319,6 @@ public class PatientProfileActivity extends AppCompatActivity implements Navigat
             prof_phone_txt.setText(list.get(0).getPhonenum());
             prof_gender_txt.setText(list.get(0).getGender());
             prof_address_txt.setText(list.get(0).getAddress());
-            prof_iotIp_txt.setText(list.get(0).getIotip());
-            prof_mac_txt.setText(list.get(0).getIotmacadd());
             prof_relative1_txt.setText(list.get(0).getRelative1());;
             prof_relative2_txt.setText(list.get(0).getRelative2());
             prof_docname_txt.setText(list.get(0).getDoctorname());

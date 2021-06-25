@@ -44,7 +44,7 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
 
     public EditText searchView;
     private TextView name_txt, email_txt;
-    public String fullname, email, role="", patientId="";
+    public String fullname, email, role = "", patientId="";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -62,6 +62,7 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
         Intent intent = getIntent();
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
+        role = intent.getStringExtra("roleData");
 
         setupNavigation();
         updateNavHeader();
@@ -153,18 +154,31 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
 
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
-        if(item.getItemId() == R.id.nav_home){
+        if(item.getItemId() == R.id.nav_home) {
 
             Intent intent = new Intent(ListOfChecksActivity.this, PatientHomeActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData", patientId);
             startActivity(intent);
             finish();
+
+        }else if(item.getItemId() == R.id.nav_makeCheck){
+                Intent intent = new Intent(ListOfChecksActivity.this, MakeCheckActivity.class);
+                intent.putExtra("fullnameData", fullname);
+                intent.putExtra("emailData", email);
+                intent.putExtra("roleData",role);
+                intent.putExtra("patientIdData",patientId);
+                startActivity(intent);
+                finish();
 
         }else if(item.getItemId() == R.id.nav_lastCheck){
             Intent intent = new Intent(ListOfChecksActivity.this, LastCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -172,6 +186,17 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
             Intent intent = new Intent(ListOfChecksActivity.this, ListOfChecksActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
+            startActivity(intent);
+            finish();
+
+        }else if(item.getItemId() == R.id.nav_listOfEmergency){
+            Intent intent = new Intent(ListOfChecksActivity.this, ListOfEmergencyActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -179,6 +204,8 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
             Intent intent = new Intent(ListOfChecksActivity.this, NormalCaseActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
@@ -186,11 +213,19 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
             Intent intent = new Intent(ListOfChecksActivity.this, PatientProfileActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
         }else if(item.getItemId() == R.id.nav_setting){
-
+            Intent intent = new Intent(ListOfChecksActivity.this, EditPatientInfoActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
+            intent.putExtra("patientIdData",patientId);
+            startActivity(intent);
+            finish();
         }else if(item.getItemId() == R.id.nav_logOut){
 
         }

@@ -2,6 +2,8 @@ package com.birzeit.memsystem.Paramedic;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -42,6 +44,13 @@ public class ParamedicHomeActivity extends AppCompatActivity implements Navigati
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.toolbar, menu);
+        return true;
     }
 
     public void setupNavigation(){
@@ -95,7 +104,7 @@ public class ParamedicHomeActivity extends AppCompatActivity implements Navigati
             finish();
 
         }else if(item.getItemId() == R.id.nav_gpsTrack){
-            Intent intent = new Intent(ParamedicHomeActivity.this, ParamedicHomeActivity.class);
+            Intent intent = new Intent(ParamedicHomeActivity.this, GPS_TrackingActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
@@ -139,5 +148,10 @@ public class ParamedicHomeActivity extends AppCompatActivity implements Navigati
     }
 
     public void tracking_btn_Action(View view) {
+        Intent intent = new Intent(ParamedicHomeActivity.this, GPS_TrackingActivity.class);
+        intent.putExtra("fullnameData", fullname);
+        intent.putExtra("emailData", email);
+        startActivity(intent);
+        finish();
     }
 }

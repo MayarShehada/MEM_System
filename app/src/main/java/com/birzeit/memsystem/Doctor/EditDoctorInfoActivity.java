@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,38 +19,30 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.birzeit.memsystem.MySingleton;
+import com.birzeit.memsystem.Models.Doctor;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class EditDoctorInfoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    public String fullname="", username="", password="", email="", phonenum="", gender="", employeeid="", specialty="",confirm_password="";
-    public EditText prof_email_txt,prof_password_txt,prof_confirm_password_txt, prof_phone_txt, prof_gender_txt;
-    public TextView prof_name_txt, prof_username_txt, prof_specialty_txt, prof_employeeid_txt;
+    public TextView prof_name_txt, prof_email_txt, prof_username_txt, prof_phone_txt, prof_gender_txt, prof_specialty_txt , prof_employeeid_txt;
     public TextView name_txt, email_txt;
+
+    public String fullname="", email = "";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,72 +50,13 @@ public class EditDoctorInfoActivity extends AppCompatActivity implements Navigat
         setContentView(R.layout.activity_edit_doctor_info);
 
         setupViews();
-        loadData();
         Intent intent = getIntent();
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
 
         setupNavigation();
         updateNavHeader();
-    }
 
-    public void loadData(){
-
-        String DoctorEmail = getIntent().getStringExtra("emailData");
-        String url = "http://192.168.1.28:80/MEM_System/DoctorJson.php?cat="+ DoctorEmail;
-
-        // output = (TextView) findViewById(R.id.jsonData);
-        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-                            JSONArray ja = response.getJSONArray("result");
-
-                            for (int i = 0; i < ja.length(); i++) {
-
-                                JSONObject jsonObject = ja.getJSONObject(i);
-                                String fullNames = jsonObject.getString("fullname");
-
-                                String userNames = jsonObject.getString("username");
-                                String email = jsonObject.getString("email");
-                                String phonenum = jsonObject.getString("phonenum");
-                                String gender = jsonObject.getString("gender");
-                                String employeeid = jsonObject.getString("employeeid");
-                                String specialty = jsonObject.getString("specialty");
-
-                                prof_name_txt.setText(fullNames);
-                                prof_username_txt.setText(userNames);
-                                prof_username_txt.setEnabled(false);
-                                prof_email_txt.setText(email);
-                                prof_phone_txt.setText(phonenum);
-                                prof_gender_txt.setText(gender);
-                                prof_employeeid_txt.setText(employeeid);
-                                prof_employeeid_txt.setEnabled(false);
-                                prof_specialty_txt.setText(specialty);
-                                prof_specialty_txt.setEnabled(false);
-
-                            }
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Volley", "Error");
-            }
-        });
-        MySingleton.getInstance(this).addToRequestQueue(jor);
-    }
-
-    public void upDate_btn_OnClick(View view){
-
-        String URL = "http://192.168.1.28:80/MEM_System/UpDateDoctorInfo.php";
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -133,8 +65,9 @@ public class EditDoctorInfoActivity extends AppCompatActivity implements Navigat
                     new String[]{Manifest.permission.INTERNET},
                     123);
 
-        } else{
-            EditDoctorInfoActivity.SendPostRequest runner = new SendPostRequest();
+        } else {
+            String URL = "http://192.168.1.28:80/MEM_System/DoctorProfile.php?email="+email;
+            EditDoctorInfoActivity.DownloadTextTask runner = new EditDoctorInfoActivity.DownloadTextTask();
             runner.execute(URL);
         }
     }
@@ -148,14 +81,10 @@ public class EditDoctorInfoActivity extends AppCompatActivity implements Navigat
         prof_gender_txt = findViewById(R.id.prof_gender_txt);
         prof_specialty_txt = findViewById(R.id.prof_specialty_txt);
         prof_employeeid_txt = findViewById(R.id.prof_employeeid_txt);
-        prof_password_txt=findViewById(R.id.prof_password_txt);
-        prof_confirm_password_txt=findViewById(R.id.prof_confirm_password_txt);
-
 
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
-
     }
 
     public void setupNavigation(){
@@ -173,7 +102,7 @@ public class EditDoctorInfoActivity extends AppCompatActivity implements Navigat
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_listOfChecks);
+        navigationView.setCheckedItem(R.id.nav_setting);
     }
 
     @Override
@@ -185,7 +114,7 @@ public class EditDoctorInfoActivity extends AppCompatActivity implements Navigat
         }
     }
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
 
             Intent intent = new Intent(EditDoctorInfoActivity.this, DoctorHomeActivity.class);
@@ -200,19 +129,19 @@ public class EditDoctorInfoActivity extends AppCompatActivity implements Navigat
             intent.putExtra("emailData", email);
             startActivity(intent);
             finish();
-
-        }else if(item.getItemId() == R.id.nav_listOfPatients){
-            Intent intent = new Intent(EditDoctorInfoActivity.this, ListOfPatientActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            startActivity(intent);
-            finish();
         }else if(item.getItemId() == R.id.nav_listOfParamedic){
             Intent intent = new Intent(EditDoctorInfoActivity.this, ListOfParamedicActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
             finish();
+        }else if(item.getItemId() == R.id.nav_listOfPatients){
+            Intent intent = new Intent(EditDoctorInfoActivity.this, ListOfPatientActivity.class);
+            intent.putExtra("fullnameData", fullname);
+            intent.putExtra("emailData", email);
+            startActivity(intent);
+            finish();
+
         }else if(item.getItemId() == R.id.nav_setting){
             Intent intent = new Intent(EditDoctorInfoActivity.this, EditDoctorInfoActivity.class);
             intent.putExtra("fullnameData", fullname);
@@ -237,106 +166,121 @@ public class EditDoctorInfoActivity extends AppCompatActivity implements Navigat
         name_txt.setText(fullname);
         email_txt.setText(email);
     }
-    private String processRequest(String restUrl) throws UnsupportedEncodingException {
 
-        Intent intent = getIntent();
-        fullname = prof_name_txt.getText().toString();
-        username = prof_username_txt.getText().toString();
-        email = prof_email_txt.getText().toString();
-        phonenum = prof_phone_txt.getText().toString();
-        password = prof_password_txt.getText().toString();
-        confirm_password = prof_confirm_password_txt.getText().toString();
-        gender = prof_gender_txt.getText().toString();
-        specialty=prof_specialty_txt.getText().toString();
-        employeeid = prof_employeeid_txt.getText().toString().trim();
+    private InputStream OpenHttpConnection(String urlString) throws IOException {
+        InputStream in = null;
+        int response = -1;
 
+        java.net.URL url = new URL(urlString);
+        URLConnection conn = url.openConnection();
 
-        String text = "";
-
-        if (!fullname.equals("") && !email.equals("") && !phonenum.equals("") && !username.equals("") && !password.equals("") && !gender.equals("")  && !employeeid.equals("") && !specialty.equals("")) {
-
-            String data = URLEncoder.encode("fullname", "UTF-8")
-                    + "=" + URLEncoder.encode(fullname, "UTF-8");
-
-            data += "&" + URLEncoder.encode("username", "UTF-8")
-                    + "=" + URLEncoder.encode(username, "UTF-8");
-
-            data += "&" + URLEncoder.encode("password", "UTF-8")
-                    + "=" + URLEncoder.encode(password, "UTF-8");
-
-            data += "&" + URLEncoder.encode("email", "UTF-8")
-                    + "=" + URLEncoder.encode(email, "UTF-8");
-
-            data += "&" + URLEncoder.encode("phonenum", "UTF-8")
-                    + "=" + URLEncoder.encode(phonenum, "UTF-8");
-
-            data += "&" + URLEncoder.encode("gender", "UTF-8")
-                    + "=" + URLEncoder.encode(gender, "UTF-8");
-
-            data += "&" +URLEncoder.encode("employeeid", "UTF-8")
-                    + "=" + URLEncoder.encode(employeeid, "UTF-8");
-
-            data += "&" + URLEncoder.encode("specialty", "UTF-8")
-                    + "=" + URLEncoder.encode(specialty, "UTF-8");
-
-            BufferedReader reader = null;
-
-            // Send data
-            try {
-                // Defined URL  where to send data
-                java.net.URL url = new URL(restUrl);
-
-                // Send POST data request
-
-                URLConnection conn = url.openConnection();
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write(data);
-                wr.flush();
-
-                // Get the server response
-
-                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line = "";
-
-                // Read Server Response
-                while ((line = reader.readLine()) != null) {
-                    // Append server response in string
-                    sb.append(line + "\n");
-                }
-
-
-                text = sb.toString();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            } finally {
-                try {
-
-                    reader.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+        if (!(conn instanceof HttpURLConnection))
+            throw new IOException("Not an HTTP connection");
+        try {
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setAllowUserInteraction(false);
+            httpConn.setInstanceFollowRedirects(true);
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
+            response = httpConn.getResponseCode();
+            if (response == HttpURLConnection.HTTP_OK) {
+                in = httpConn.getInputStream();
             }
+        } catch (Exception ex) {
+            Log.d("Networking", ex.getLocalizedMessage());
+            throw new IOException("Error connecting");
         }
-        // Show response on activity
-        return text;
+        return in;
     }
-    private class SendPostRequest extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                return processRequest(urls[0]);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+
+    private String DownloadText(String URL) {
+        int BUFFER_SIZE = 2000;
+        InputStream in = null;
+        try {
+            in = OpenHttpConnection(URL);
+        } catch (IOException e) {
+            Log.d("Networking", e.getLocalizedMessage());
             return "";
         }
 
+        InputStreamReader isr = new InputStreamReader(in);
+        int charRead;
+        String str = "";
+        char[] inputBuffer = new char[BUFFER_SIZE];
+        try {
+            while ((charRead = isr.read(inputBuffer)) > 0) {
+                //---convert the chars to a String---
+                String readString =
+                        String.copyValueOf(inputBuffer, 0, charRead);
+                str += readString;
+                inputBuffer = new char[BUFFER_SIZE];
+            }
+            in.close();
+        } catch (IOException e) {
+            Log.d("Networking", e.getLocalizedMessage());
+            return "";
+        }
+        return str;
+    }
+    private class DownloadTextTask extends AsyncTask<String, Void, String> {
         @Override
-        protected void onPostExecute(String result) {
+        protected String doInBackground(String... strings) {
+            return DownloadText(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+
+            ArrayList<Doctor> list = new ArrayList<>();
+
+            String obj[] = s.split("////");
+
+            for (int i = 0; i < obj.length; i++) {
+
+                if (!obj[i].equals(null)) {
+                    String objects[] = obj[i].split(",");
+
+                    if (!objects.equals(null)) {
+
+                        String fullName = objects[0];
+                        String userName = objects[1];
+                        String email = objects[2];
+                        String phone = objects[3];
+                        String gender = objects[4];
+                        String employeeId = objects[5];
+                        String specialty = objects[6];
+
+                        Doctor doctor = new Doctor(fullName, userName, email, phone, gender, employeeId,specialty);
+                        list.add(doctor);
+                    }
+                }
+            }
+
+            prof_name_txt.setText(list.get(0).getFullName());
+            prof_email_txt.setText(list.get(0).getEmail());
+            prof_username_txt.setText(list.get(0).getUserName());
+            prof_phone_txt.setText(list.get(0).getPhoneNum());
+            prof_gender_txt.setText(list.get(0).getGender());
+            prof_specialty_txt.setText(list.get(0).getSpecialty());
+            prof_employeeid_txt.setText(list.get(0).getEmployeeId());
 
         }
     }
 
+    public void changeInfo_btn_onClick(View view) {
+        Intent intent = new Intent(EditDoctorInfoActivity.this, EditInformationDoctorActivity.class);
+        intent.putExtra("fullnameData", fullname);
+        intent.putExtra("emailData", email);
+        startActivity(intent);
+        finish();
+    }
+
+    public void resetPassword_Btn_OnClick(View view) {
+        Intent intent = new Intent(EditDoctorInfoActivity.this, ResetPasswordDoctorActivity.class);
+        intent.putExtra("fullnameData", fullname);
+        intent.putExtra("emailData", email);
+        startActivity(intent);
+        finish();
+    }
 }

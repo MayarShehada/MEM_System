@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/Gray"
+    tools:context=".Doctor.PatientInfoHomeActivity"
+    tools:openDrawer="start">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/White">
+
+        <!--    <RelativeLayout-->
+        <!--        xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--        xmlns:tools="http://schemas.android.com/tools"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="match_parent"-->
+        <!--        android:background="@color/White">-->
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/doctor_toolbar" />
+
+        <RelativeLayout
+            android:id="@+id/rellay1"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/LightGreen"
+            tools:context=".Doctor.PatientInfoActivity"
+            android:paddingBottom="10dp">
+
+
+            <TextView
+                android:id="@+id/prof_name_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100sp"
+                android:fontFamily="sans-serif-light"
+                android:text="Joey Tribbiani"
+                android:textColor="@color/white"
+                android:textSize="32sp" />
+
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rellay1"
+            android:paddingTop="10dp">
+
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="350sp"
+                android:layout_height="80sp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/white"
+                android:onClick="check_details_btn_action"
+                android:text="@string/checks_details"
+                android:textColor="@color/Gray2"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.491"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.077" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="350sp"
+                android:layout_height="80sp"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/white"
+                android:onClick="patient_details_btn_action"
+                android:text="@string/patient_details"
+                android:textColor="@color/Gray2"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.491"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.312" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_doctor"
+        app:menu="@menu/doctor_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

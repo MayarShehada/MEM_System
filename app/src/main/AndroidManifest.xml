@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.birzeit.memsystem">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -16,12 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MEMSystem"
         android:usesCleartextTraffic="true">
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBPss9LuTm4tFQY8bKrTmJPnRUhDpPQOlc"/>
-
-        <activity android:name=".Paramedic.MapActivity"></activity>
+        <activity android:name=".Relative.EditInformationRelativeActivity" />
+        <activity android:name=".Paramedic.EditInformationParamedicActivity" />
+        <activity android:name=".Paramedic.GPS_TrackingActivity" />
+        <activity android:name=".Patient.ResetPasswordPatientActivity" />
+        <activity android:name=".Patient.EditInformationPatientActivity" />
+        <activity android:name=".Doctor.EditInformationDoctorActivity" />
+        <activity android:name=".Doctor.ResetPasswordDoctorActivity" />
+        <activity android:name=".Doctor.NotificationActivity" />
+        <activity android:name=".Doctor.PatientInfoHomeActivity" />
+        <activity android:name=".Doctor.ParamedicInfoActivity" />
+        <activity android:name=".Paramedic.MapActivity" />
         <activity android:name=".Patient.ListOfEmergencyActivity" />
         <activity android:name=".Patient.MakeCheckActivity" />
         <activity android:name=".Doctor.DoctorListOfChecksActivity" />
@@ -50,6 +57,8 @@
         <activity android:name=".Doctor.DoctorRegister" />
         <activity android:name=".Patient.PatientRegisterActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".Patient.ListOfChecksActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,12 +66,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Patient.ListOfChecksActivity" />
-        <activity android:name=".RegisterActivity" />
 
         <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-    </application>
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBPss9LuTm4tFQY8bKrTmJPnRUhDpPQOlc" />
 
+    </application>
 </manifest>

@@ -3,20 +3,18 @@ package com.birzeit.memsystem.Models;
 public class Patient {
 
 
-    private String fullname,username ,email,phonenum,gender,address, iotip, iotmacadd, relative1,relative2, doctorname ;
+    private String fullname,username ,email,phonenum,gender,address, relative1,relative2, doctorname ;
 
     public Patient() {
     }
 
-    public Patient(String fullname, String username, String email, String phonenum, String gender, String address, String iotip, String iotmacadd, String relative1, String relative2, String doctorname) {
+    public Patient(String fullname, String username, String email, String phonenum, String gender, String address, String relative1, String relative2, String doctorname) {
         this.fullname = fullname;
         this.username = username;
         this.email = email;
         this.phonenum = phonenum;
         this.gender = gender;
         this.address = address;
-        this.iotip = iotip;
-        this.iotmacadd = iotmacadd;
         this.relative1 = relative1;
         this.relative2 = relative2;
         this.doctorname = doctorname;
@@ -68,22 +66,6 @@ public class Patient {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getIotip() {
-        return iotip;
-    }
-
-    public void setIotip(String iotip) {
-        this.iotip = iotip;
-    }
-
-    public String getIotmacadd() {
-        return iotmacadd;
-    }
-
-    public void setIotmacadd(String iotmacadd) {
-        this.iotmacadd = iotmacadd;
     }
 
     public String getRelative1() {

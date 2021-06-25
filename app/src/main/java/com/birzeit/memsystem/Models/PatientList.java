@@ -4,19 +4,17 @@ package com.birzeit.memsystem.Models;
 public class PatientList {
 
     private int id;
-    private String fullname,email,phonenum,gender,address, iotIp, iotmac, relative1,relative2,Doctor_fullName,Doctor_email ;
+    private String fullname,email,phonenum,gender,address, relative1,relative2,Doctor_fullName,Doctor_email ;
 
     public PatientList() {}
 
-    public PatientList(int id, String fullname, String email, String phonenum, String gender, String address, String iotIp, String iotmac, String relative1, String relative2, String doctor_fullName, String doctor_email) {
+    public PatientList(int id, String fullname, String email, String phonenum, String gender, String address, String relative1, String relative2, String doctor_fullName, String doctor_email) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
         this.phonenum = phonenum;
         this.gender = gender;
         this.address = address;
-        this.iotIp = iotIp;
-        this.iotmac = iotmac;
         this.relative1 = relative1;
         this.relative2 = relative2;
         Doctor_fullName = doctor_fullName;
@@ -69,22 +67,6 @@ public class PatientList {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getIotIp() {
-        return iotIp;
-    }
-
-    public void setIotIp(String iotIp) {
-        this.iotIp = iotIp;
-    }
-
-    public String getIotmac() {
-        return iotmac;
-    }
-
-    public void setIotmac(String iotmac) {
-        this.iotmac = iotmac;
     }
 
     public String getRelative1() {

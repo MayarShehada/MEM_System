@@ -34,7 +34,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
     private TextView dateOfCheck_txt;
 
     public int checkId;
-    public String heartBeat, bodyTemp, bloodPressure, dateOfCheck,fullname, email,patientId="";
+    public String heartBeat, bodyTemp, bloodPressure, dateOfCheck,fullname, email,patientId="", role = "";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -111,6 +111,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, PatientHomeActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -118,6 +119,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, MakeCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -125,6 +127,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, LastCheckActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -132,6 +135,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, ListOfChecksActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -139,6 +143,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, ListOfEmergencyActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -146,6 +151,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, NormalCaseActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -153,6 +159,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, PatientProfileActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -160,6 +167,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(CheckActivity.this, EditPatientInfoActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
+            intent.putExtra("roleData",role);
             startActivity(intent);
             finish();
 
@@ -180,7 +188,7 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
         Intent intent = getIntent();
         fullname = intent.getStringExtra("fullnameData");
         email = intent.getStringExtra("emailData");
-
+        role = intent.getStringExtra("roleData");
 
         name_txt.setText(fullname);
         email_txt.setText(email);

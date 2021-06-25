@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.birzeit.memsystem.Doctor.PatientInfoActivity;
+import com.birzeit.memsystem.Doctor.ParamedicInfoActivity;
 import com.birzeit.memsystem.Models.ParamedicList;
 import com.birzeit.memsystem.R;
 
@@ -48,9 +48,9 @@ public class ParamedicListAdapter extends RecyclerView.Adapter<ParamedicListAdap
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PatientInfoActivity.class);
+                Intent intent = new Intent(context, ParamedicInfoActivity.class);
 
-                intent.putExtra("patientFullName_data",paramedic.getFullname());
+                intent.putExtra("paramadicFullName_data",paramedic.getFullname());
                 intent.putExtra("email_data",paramedic.getEmail());
                 intent.putExtra("phonenum_data",paramedic.getPhonenum());
                 intent.putExtra("gender_data",paramedic.getGender());

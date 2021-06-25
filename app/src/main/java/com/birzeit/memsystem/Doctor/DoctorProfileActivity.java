@@ -102,7 +102,7 @@ public class DoctorProfileActivity extends AppCompatActivity implements Navigati
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_listOfChecks);
+        navigationView.setCheckedItem(R.id.nav_profile);
     }
 
     @Override

@@ -102,7 +102,7 @@ public class ParamedicProfileActivity extends AppCompatActivity implements Navig
 
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_listOfChecks);
+        navigationView.setCheckedItem(R.id.nav_profile);
     }
 
     @Override
@@ -132,14 +132,14 @@ public class ParamedicProfileActivity extends AppCompatActivity implements Navig
             finish();
 
         }else if(item.getItemId() == R.id.nav_map){
-            Intent intent = new Intent(ParamedicProfileActivity.this, ParamedicHomeActivity.class);
+            Intent intent = new Intent(ParamedicProfileActivity.this, MapActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
             finish();
 
         }else if(item.getItemId() == R.id.nav_gpsTrack){
-            Intent intent = new Intent(ParamedicProfileActivity.this, ParamedicHomeActivity.class);
+            Intent intent = new Intent(ParamedicProfileActivity.this, GPS_TrackingActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
             startActivity(intent);
