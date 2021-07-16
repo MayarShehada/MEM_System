@@ -27,7 +27,7 @@ public class WelcomeActivity extends AppCompatActivity {
     public String username, role = "", email = "", fullname = "", id="";
     RequestQueue requestQueue;
 
-    private static int splash_time_out = 3000;
+    private static int splash_time_out = 2000;
 
 
     @Override

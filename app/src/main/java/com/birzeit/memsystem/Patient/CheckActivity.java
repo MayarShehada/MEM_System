@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.MySingleton;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
@@ -172,7 +173,9 @@ public class CheckActivity extends AppCompatActivity implements NavigationView.O
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(CheckActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

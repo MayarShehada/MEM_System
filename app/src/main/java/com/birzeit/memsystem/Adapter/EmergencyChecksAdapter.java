@@ -12,8 +12,8 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.birzeit.memsystem.Doctor.CheckInfoActivity;
 import com.birzeit.memsystem.Models.Check;
+import com.birzeit.memsystem.Patient.CheckActivity;
 import com.birzeit.memsystem.R;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class EmergencyChecksAdapter  extends RecyclerView.Adapter<EmergencyCheck
             holder.mainLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, CheckInfoActivity.class);
+                    Intent intent = new Intent(context, CheckActivity.class);
 
                     intent.putExtra("checkId_data", check.getCheckId());
                     intent.putExtra("heartBeat_data", check.getHeartBeat());

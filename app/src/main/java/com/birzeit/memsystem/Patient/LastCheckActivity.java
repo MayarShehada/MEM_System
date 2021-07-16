@@ -1,9 +1,6 @@
 package com.birzeit.memsystem.Patient;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,23 +11,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.Models.Check;
+import com.birzeit.memsystem.MySingleton;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,21 +55,9 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
         updateNavHeader();
 
         patientId = getIntent().getStringExtra("patientIdData");
-        String URL = "http://192.168.1.28:80/MEM_System/lastCheck.php" ;
 
         lastCheck = new ArrayList<>();
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.INTERNET},
-                    123);
-        } else {
-            LastCheckActivity.DownloadTextTask runner = new LastCheckActivity.DownloadTextTask();
-            runner.execute(URL);
-        }
+        loadData();
 
     }
 
@@ -207,7 +193,9 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(LastCheckActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -229,100 +217,49 @@ public class LastCheckActivity extends AppCompatActivity implements NavigationVi
         email_txt.setText(email);
     }
 
-    private InputStream OpenHttpConnection(String urlString) throws IOException {
-        InputStream in = null;
-        int response = -1;
+    private void loadData() {
+        String URL = "http://192.168.1.28:80/MEM_System/lastCheck.php?cat="+ patientId ;
 
-        java.net.URL url = new URL(urlString);
-        URLConnection conn = url.openConnection();
+        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
-        if (!(conn instanceof HttpURLConnection))
-            throw new IOException("Not an HTTP connection");
-        try {
-            HttpURLConnection httpConn = (HttpURLConnection) conn;
-            httpConn.setAllowUserInteraction(false);
-            httpConn.setInstanceFollowRedirects(true);
-            httpConn.setRequestMethod("GET");
-            httpConn.connect();
-            response = httpConn.getResponseCode();
-            if (response == HttpURLConnection.HTTP_OK) {
-                in = httpConn.getInputStream();
-            }
-        } catch (Exception ex) {
-            Log.d("Networking", ex.getLocalizedMessage());
-            throw new IOException("Error connecting");
-        }
-        return in;
-    }
+                        try {
+                            JSONArray ja = response.getJSONArray("result");
 
-    private String DownloadText(String URL) {
-        int BUFFER_SIZE = 2000;
-        InputStream in = null;
-        try {
-            in = OpenHttpConnection(URL);
-        } catch (IOException e) {
-            Log.d("Networking", e.getLocalizedMessage());
-            return "";
-        }
+                            Check check;
 
-        InputStreamReader isr = new InputStreamReader(in);
-        int charRead;
-        String str = "";
-        char[] inputBuffer = new char[BUFFER_SIZE];
-        try {
-            while ((charRead = isr.read(inputBuffer)) > 0) {
-                //---convert the chars to a String---
-                String readString =
-                        String.copyValueOf(inputBuffer, 0, charRead);
-                str += readString;
-                inputBuffer = new char[BUFFER_SIZE];
-            }
-            in.close();
-        } catch (IOException e) {
-            Log.d("Networking", e.getLocalizedMessage());
-            return "";
-        }
-        return str;
-    }
+                            for (int i = 0; i < ja.length(); i++) {
 
-    private class DownloadTextTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... strings) {
+                                JSONObject jsonObject = ja.getJSONObject(i);
+                                String checkid = jsonObject.getString("checkId");
+                                String hertBeat = jsonObject.getString("heartBeat");
+                                String bodyTemp = jsonObject.getString("bodyTemp");
+                                String bloodPressure = jsonObject.getString("bloodPressure");
+                                String location = jsonObject.getString("location");
+                                String dateOfCheck = jsonObject.getString("dateOfCheck");
+                                String flag = jsonObject.getString("flag");
+                                String patient_id = jsonObject.getString("patientId");
 
-            return DownloadText(strings[0]);
-        }
+                                if(patientId.equals(patient_id)){
+                                    check = new Check(Integer.parseInt(checkid), hertBeat, bodyTemp, bloodPressure,location, dateOfCheck,role, flag,fullname,email);
+                                    lastCheck.add(check);
 
-        @Override
-        protected void onPostExecute(String s) {
+                                    setupTexts();
+                                }
 
-
-            String obj[] = s.split("////");
-            Check check;
-            for(int i = 0 ; i < obj.length ; i++)
-            {
-
-                if(! obj[i].equals(null)) {
-                    String objects[] = obj[i].split(",");
-
-                    if(!objects.equals(null)) {
-
-                        int checkid = Integer.parseInt(objects[0]);
-                        String hertBeat = objects[1];
-                        String bodyTemp = objects[2];
-                        String bloodPressure = objects[3];
-                        String dateOfCheck = objects[4];
-                        String flag = objects[5];
-                        String patient_id = objects[6];
-                        String role = getIntent().getStringExtra("roleData");
-
-                        if(patientId.equals(patient_id)){
-                            check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck, role, flag,fullname,email);
-                            lastCheck.add(check);
-                            setupTexts();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
-                }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", "Error");
             }
-        }
+        });
+        MySingleton.getInstance(this).addToRequestQueue(jor);
     }
 }

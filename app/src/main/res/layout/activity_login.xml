@@ -119,6 +119,8 @@
         android:drawablePadding="10sp"
         android:drawableTint="@color/Blue"
         android:ems="10"
+        app:boxStrokeColor="#000000"
+        app:hintTextColor="#000000"
         android:hint="@string/username"
         android:inputType="textPersonName"
         android:shadowDx="1.5"

@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.birzeit.memsystem.Doctor.CheckInfoActivity;
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.Models.Relative;
 import com.birzeit.memsystem.Patient.ListOfChecksActivity;
 import com.birzeit.memsystem.R;
@@ -139,7 +141,9 @@ public class EditInformationRelativeActivity extends AppCompatActivity implement
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(EditInformationRelativeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

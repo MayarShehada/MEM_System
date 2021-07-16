@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.Models.Paramedic;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
@@ -153,7 +154,9 @@ public class ParamedicProfileActivity extends AppCompatActivity implements Navig
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(ParamedicProfileActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

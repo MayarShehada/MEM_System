@@ -2,8 +2,6 @@ package com.birzeit.memsystem.Paramedic;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -46,12 +45,6 @@ public class ParamedicHomeActivity extends AppCompatActivity implements Navigati
         toolbar = findViewById(R.id.toolbar);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.toolbar, menu);
-        return true;
-    }
 
     public void setupNavigation(){
         //ToolBar
@@ -118,7 +111,9 @@ public class ParamedicHomeActivity extends AppCompatActivity implements Navigati
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(ParamedicHomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

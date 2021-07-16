@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MEMSystem"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Doctor.DoctorNotificationHomeActivity"></activity>
         <activity android:name=".Relative.EditInformationRelativeActivity" />
         <activity android:name=".Paramedic.EditInformationParamedicActivity" />
         <activity android:name=".Paramedic.GPS_TrackingActivity" />
@@ -25,7 +26,7 @@
         <activity android:name=".Patient.EditInformationPatientActivity" />
         <activity android:name=".Doctor.EditInformationDoctorActivity" />
         <activity android:name=".Doctor.ResetPasswordDoctorActivity" />
-        <activity android:name=".Doctor.NotificationActivity" />
+        <activity android:name=".Doctor.DoctorNotificationActivity" />
         <activity android:name=".Doctor.PatientInfoHomeActivity" />
         <activity android:name=".Doctor.ParamedicInfoActivity" />
         <activity android:name=".Paramedic.MapActivity" />
@@ -69,7 +70,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBPss9LuTm4tFQY8bKrTmJPnRUhDpPQOlc" />
-
+            android:value="AIzaSyAn2SH7YfgQTYraFGqXAZF8BYkGr-c-mds" />
     </application>
+
 </manifest>

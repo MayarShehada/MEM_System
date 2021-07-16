@@ -2,8 +2,6 @@ package com.birzeit.memsystem.Patient;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.MySingleton;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
@@ -47,13 +46,6 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
         setupNavigation();
         updateNavHeader();
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.toolbar, menu);
-        return true;
     }
 
     private void setupViews() {
@@ -115,7 +107,9 @@ public class PatientHomeActivity extends AppCompatActivity implements Navigation
             LoadData(EditPatientInfoActivity.class);
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(PatientHomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

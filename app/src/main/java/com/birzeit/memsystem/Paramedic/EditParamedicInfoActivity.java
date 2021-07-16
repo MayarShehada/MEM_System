@@ -21,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.birzeit.memsystem.Doctor.EditInformationDoctorActivity;
 import com.birzeit.memsystem.Doctor.ResetPasswordDoctorActivity;
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.Models.Paramedic;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
@@ -155,7 +156,9 @@ public class EditParamedicInfoActivity extends AppCompatActivity implements Navi
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(EditParamedicInfoActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

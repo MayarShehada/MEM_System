@@ -1,12 +1,10 @@
-package com.birzeit.memsystem.Patient;
+package com.birzeit.memsystem.Doctor;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,13 +22,21 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.birzeit.memsystem.Adapter.EmergencyChecksAdapter;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.birzeit.memsystem.Adapter.DoctorNotificationAdapter;
 import com.birzeit.memsystem.LoginActivity;
-import com.birzeit.memsystem.Models.Check;
+import com.birzeit.memsystem.Models.DoctorNotification;
+import com.birzeit.memsystem.MySingleton;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,40 +47,41 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListOfEmergencyActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class DoctorNotificationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private RecyclerView check_recycle;
-    List<Check> checkList;
+    private RecyclerView notification_recycle;
+    List<DoctorNotification> notificationDoctor;
+    List<DoctorNotification> notificationDoctor2;
+    String doctorName = "";
 
-    public EditText searchView;
-    private TextView name_txt, email_txt;
-    public String fullname, email, role = "", patientId="";
+    public TextView name_txt, email_txt, counter;
+
+    public String fullname="", email = "";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
 
-    EmergencyChecksAdapter adapter;
+    public EditText searchView;
+
+    DoctorNotificationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_emergency);
-
-        setupViews();
+        setContentView(R.layout.activity_doctor_notification);
 
         Intent intent = getIntent();
-        fullname = intent.getStringExtra("fullnameData");
-        email = intent.getStringExtra("emailData");
-        role = intent.getStringExtra("roleData");
+        doctorName = intent.getStringExtra("fullnameData");
 
+        setupViews();
         setupNavigation();
         updateNavHeader();
 
-        patientId = getIntent().getStringExtra("patientIdData");
-        String URL = "http://192.168.1.28:80/MEM_System/Checks.php?patientId=" +patientId;
+        notificationDoctor = new ArrayList<>();
+        notificationDoctor2 = new ArrayList<>();
 
-        checkList = new ArrayList<>();
+        getNotificationNumber();
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.INTERNET)
@@ -85,48 +92,71 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
                     123);
 
         } else {
-            ListOfEmergencyActivity.DownloadTextTask runner = new ListOfEmergencyActivity.DownloadTextTask();
+            String URL = "http://192.168.1.28:80/MEM_System/getDoctorNotification.php?doctorname="+doctorName;
+            DoctorNotificationActivity.DownloadTextTask runner = new DoctorNotificationActivity.DownloadTextTask();
             runner.execute(URL);
         }
+    }
 
-        searchView.addTextChangedListener(new TextWatcher() {
+    public void notification_btn_Action(View view){
+        Intent intent = new Intent(DoctorNotificationActivity.this, DoctorNotificationActivity.class);
+        intent.putExtra("fullnameData", fullname);
+        intent.putExtra("emailData", email);
+        startActivity(intent);
+        finish();
+    }
+
+    public void getNotificationNumber(){
+
+        String URL2 = "http://192.168.1.28/MEM_System/getDoctorNotificationJson.php?doctorName="+ fullname ;
+
+        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, URL2, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray ja = response.getJSONArray("result");
+
+                            DoctorNotification noti;
+
+                            for (int i = 0; i < ja.length(); i++) {
+
+                                JSONObject jsonObject = ja.getJSONObject(i);
+                                String checkid = jsonObject.getString("id");
+                                String title = jsonObject.getString("title");
+                                String doctorName = jsonObject.getString("doctorName");
+                                String patientName = jsonObject.getString("patientName");
+                                String checkId = jsonObject.getString("checkId");
+                                String date = jsonObject.getString("date");
+
+                                if(fullname.equals(doctorName)){
+                                    noti = new DoctorNotification(checkid, title, doctorName, patientName,checkId, date);
+                                    notificationDoctor2.add(noti);
+                                }
+                            }
+                            counter.setText(notificationDoctor2.size() + " ");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                filter(s.toString());
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", "Error");
             }
         });
+        MySingleton.getInstance(this).addToRequestQueue(jor);
     }
-
-    private void filter(String text) {
-
-        ArrayList<Check> filterList = new ArrayList<>();
-        for (Check item : checkList)
-        {
-            if (item.getDateOfCheck().toLowerCase().contains(text.toLowerCase()))
-            {
-                filterList.add(item);
-            }
-        }
-        adapter.filteredList(filterList);
-    }
-
-    public void setupViews() {
-
-        check_recycle = findViewById(R.id.check_recycle);
+    private void setupViews() {
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
-        searchView = findViewById(R.id.searchView);
+
+        notification_recycle = findViewById(R.id.notification_recycle);
+        counter = findViewById(R.id.counter);
     }
 
     public void setupNavigation(){
@@ -134,7 +164,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
         setSupportActionBar(toolbar);
 
         //NavigationDrawer Menu
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(ListOfEmergencyActivity.this,
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(DoctorNotificationActivity.this,
                 drawerLayout,
                 toolbar,
                 R.string.open,
@@ -142,9 +172,8 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_listOfEmergency);
+        navigationView.setCheckedItem(R.id.nav_home);
     }
 
     @Override
@@ -159,79 +188,41 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         if(item.getItemId() == R.id.nav_home){
-            Intent intent = new Intent(ListOfEmergencyActivity.this, PatientHomeActivity.class);
+
+            Intent intent = new Intent(DoctorNotificationActivity.this, DoctorHomeActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
-        }else if(item.getItemId() == R.id.nav_makeCheck){
-            Intent intent = new Intent(ListOfEmergencyActivity.this, MakeCheckActivity.class);
+        }else if(item.getItemId() == R.id.nav_profile) {
+            Intent intent = new Intent(DoctorNotificationActivity.this, DoctorProfileActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
-        }else if(item.getItemId() == R.id.nav_lastCheck){
-            Intent intent = new Intent(ListOfEmergencyActivity.this, LastCheckActivity.class);
+        }else if(item.getItemId() == R.id.nav_listOfPatients) {
+            Intent intent = new Intent(DoctorNotificationActivity.this, ListOfPatientActivity.class);;
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
-
-        }else if(item.getItemId() == R.id.nav_listOfChecks){
-            Intent intent = new Intent(ListOfEmergencyActivity.this, ListOfChecksActivity.class);
+        }else if(item.getItemId() == R.id.nav_listOfParamedic){
+            Intent intent = new Intent(DoctorNotificationActivity.this, ListOfParamedicActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
-
-        }else if(item.getItemId() == R.id.nav_listOfEmergency){
-            Intent intent = new Intent(ListOfEmergencyActivity.this, ListOfEmergencyActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            intent.putExtra("patientIdData",patientId);
-            startActivity(intent);
-            finish();
-
-        }else if(item.getItemId() == R.id.nav_normalCase){
-            Intent intent = new Intent(ListOfEmergencyActivity.this, NormalCaseActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            intent.putExtra("patientIdData",patientId);
-            startActivity(intent);
-            finish();
-
-        }else if(item.getItemId() == R.id.nav_profile){
-            Intent intent = new Intent(ListOfEmergencyActivity.this, PatientProfileActivity.class);
-            intent.putExtra("fullnameData", fullname);
-            intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            intent.putExtra("patientIdData",patientId);
-            startActivity(intent);
-            finish();
-
         }else if(item.getItemId() == R.id.nav_setting){
-            Intent intent = new Intent(ListOfEmergencyActivity.this, EditPatientInfoActivity.class);
+            Intent intent = new Intent(DoctorNotificationActivity.this, EditDoctorInfoActivity.class);
             intent.putExtra("fullnameData", fullname);
             intent.putExtra("emailData", email);
-            intent.putExtra("roleData",role);
-            intent.putExtra("patientIdData",patientId);
             startActivity(intent);
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-            Intent intent = new Intent(ListOfEmergencyActivity.this, LoginActivity.class);
+            Intent intent = new Intent(DoctorNotificationActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -245,6 +236,10 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
         View headerView = navigationView.getHeaderView(0);
         name_txt = headerView.findViewById(R.id.name_txt);
         email_txt = headerView.findViewById(R.id.email_txt);
+
+        Intent intent = getIntent();
+        fullname = intent.getStringExtra("fullnameData");
+        email = intent.getStringExtra("emailData");
 
         name_txt.setText(fullname);
         email_txt.setText(email);
@@ -317,7 +312,7 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
 
 
             String obj[] = s.split("////");
-            Check check;
+            DoctorNotification list;
             for(int i = 0 ; i < obj.length ; i++)
             {
 
@@ -326,24 +321,22 @@ public class ListOfEmergencyActivity extends AppCompatActivity implements Naviga
 
                     if(!objects.equals(null)) {
 
-                        int checkid = Integer.parseInt(objects[0]);
-                        String hertBeat = objects[1];
-                        String bodyTemp = objects[2];
-                        String bloodPressure = objects[3];
-                        String location = objects[4];
-                        String dateOfCheck = objects[5];
-                        String flag = objects[6];
-                        String role=getIntent().getStringExtra("roleData");
-                        if(flag.equals("1")) {
-                            check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, location,dateOfCheck, role, flag, fullname, email);
-                            checkList.add(check);
-                        }
+                        String id = objects[0];
+                        String title = objects[1];
+                        String doctorName = objects[2];
+                        String patientName = objects[3];
+                        String checkId = objects[4];
+                        String date = objects[5];
+
+                        list = new DoctorNotification(id, title, doctorName, patientName, checkId, date);
+                        notificationDoctor.add(list);
                     }
                 }
             }
-            check_recycle.setLayoutManager(new LinearLayoutManager(ListOfEmergencyActivity.this));
-            EmergencyChecksAdapter adapter = new EmergencyChecksAdapter(ListOfEmergencyActivity.this, checkList);
-            check_recycle.setAdapter(adapter);
+
+            notification_recycle.setLayoutManager(new LinearLayoutManager(DoctorNotificationActivity.this));
+            adapter = new DoctorNotificationAdapter(DoctorNotificationActivity.this, notificationDoctor);
+            notification_recycle.setAdapter(adapter);
         }
     }
 }

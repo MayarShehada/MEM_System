@@ -23,11 +23,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.birzeit.memsystem.Adapter.CheckAdapter;
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.Models.Check;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -227,7 +231,9 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
             startActivity(intent);
             finish();
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(ListOfChecksActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -324,10 +330,11 @@ public class ListOfChecksActivity extends AppCompatActivity implements Navigatio
                         String hertBeat = objects[1];
                         String bodyTemp = objects[2];
                         String bloodPressure = objects[3];
-                        String dateOfCheck = objects[4];
-                        String flag = objects[5];
+                        String location = objects[4];
+                        String dateOfCheck = objects[5];
+                        String flag = objects[6];
                         String role=getIntent().getStringExtra("roleData");
-                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, dateOfCheck, role, flag,fullname,email);
+                        check = new Check(checkid, hertBeat, bodyTemp, bloodPressure, location,dateOfCheck, role, flag,fullname,email);
                         checkList.add(check);
                     }
                 }

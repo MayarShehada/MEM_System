@@ -6,6 +6,7 @@ public class Check {
     private String heartBeat;
     private String bodyTemp;
     private String bloodPressure;
+    private String location;
     private String dateOfCheck;
     private String role;
     private String flag;
@@ -15,11 +16,12 @@ public class Check {
     public Check() {
     }
 
-    public Check(int checkId, String heartBeat, String bodyTemp, String bloodPressure, String dateOfCheck, String role, String flag, String fullname, String email) {
+    public Check(int checkId, String heartBeat, String bodyTemp, String bloodPressure, String location, String dateOfCheck, String role, String flag, String fullname, String email) {
         this.checkId = checkId;
         this.heartBeat = heartBeat;
         this.bodyTemp = bodyTemp;
         this.bloodPressure = bloodPressure;
+        this.location = location;
         this.dateOfCheck = dateOfCheck;
         this.role = role;
         this.flag = flag;
@@ -57,6 +59,14 @@ public class Check {
 
     public void setBloodPressure(String bloodPressure) {
         this.bloodPressure = bloodPressure;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getDateOfCheck() {

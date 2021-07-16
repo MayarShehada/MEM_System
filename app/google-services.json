@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "184373500434",
+    "project_id": "notificationsys-b23c7",
+    "storage_bucket": "notificationsys-b23c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184373500434:android:11c89510c693ed3b5296cb",
+        "android_client_info": {
+          "package_name": "com.birzeit.memsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184373500434-c6fjo8qq607m08828pt7qeql9j18j81i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApdihYFVdJgLhrYRAuhhN33TgIeEyYt2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184373500434-c6fjo8qq607m08828pt7qeql9j18j81i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184373500434:android:8e88f2b76238c4d85296cb",
+        "android_client_info": {
+          "package_name": "com.birzeit.notificationsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184373500434-c6fjo8qq607m08828pt7qeql9j18j81i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApdihYFVdJgLhrYRAuhhN33TgIeEyYt2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184373500434-c6fjo8qq607m08828pt7qeql9j18j81i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

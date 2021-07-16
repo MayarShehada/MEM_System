@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,9 +17,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,10 +30,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.jetbrains.annotations.NotNull;
 
-public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     private TextView name_txt, email_txt;
     public String fullname = "", email = "";
@@ -43,11 +48,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private NavigationView navigationView;
     private Toolbar toolbar;
 
-    //Initialize variable
-    private FusedLocationProviderClient client;
-    private SupportMapFragment mapFragment;
-    private int REQUEST_CODE = 111;
-    private int ZOOM = 100;
+    SupportMapFragment smf;
+    FusedLocationProviderClient client;
+
+    private static final int REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,88 +63,54 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         updateNavHeader();
     }
 
-    protected void createLocationRequest() {
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
     private void setupViews() {
         drawerLayout = findViewById(R.id.drawerlayout);
         navigationView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
 
-        //Assign variable
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.maps);
-        //Initialize fused location
-        client = LocationServices.getFusedLocationProviderClient(MapActivity.this);
+        smf = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
+        client = LocationServices.getFusedLocationProviderClient(this);
 
-        //Check permission
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        Dexter.withContext(getApplicationContext())
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        getMyLocation();
+                    }
 
-            //When permission grated
-            //Call method
-            getCurrentLocation();
-        } else {
-            //When permission denied
-            //Request permission
-            ActivityCompat.requestPermissions(MapActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-        }
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                    }
+                }).check();
     }
 
-    private void getCurrentLocation() {
-        //Initialize task location
+    private void getMyLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Task<Location> task = client.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                //When success
-                if(location != null){
-                    //Sync map
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
+
+            Task<Location> task = client.getLastLocation();
+            task.addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    smf.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(@NonNull @NotNull GoogleMap googleMap) {
-                            //Initialize lat lng
-                            LatLng latLng = new LatLng(location.getLatitude()
-                            , location.getLongitude());
-                            //Create marker options
-                            MarkerOptions options = new MarkerOptions().position(latLng).title("I am there");
-                            //Zoom map
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
-                            //Add marker on map
-                            googleMap.addMarker(options).showInfoWindow();
+                            LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+                            MarkerOptions markerOptions = new MarkerOptions().position(latlng).title("I AM HERE.");
+
+                            googleMap.addMarker(markerOptions);
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 10));
                         }
                     });
                 }
-            }
-        });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //When permission grated
-                //Call method
-                getCurrentLocation();
-            } else {
-                Toast.makeText(this, "Perrmission Denied", Toast.LENGTH_SHORT).show();
-            }
+            });
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     public void setupNavigation(){
@@ -208,7 +178,9 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(MapActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

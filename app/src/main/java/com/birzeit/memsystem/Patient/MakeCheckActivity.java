@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -22,14 +22,20 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.birzeit.memsystem.LoginActivity;
+import com.birzeit.memsystem.Models.Check;
+import com.birzeit.memsystem.MySingleton;
 import com.birzeit.memsystem.R;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -39,7 +45,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class MakeCheckActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,8 +59,8 @@ public class MakeCheckActivity extends AppCompatActivity implements NavigationVi
     private NavigationView navigationView;
     private Toolbar toolbar;
 
-    String heartBeat = "", bodyTemp = "", bloodPress = "", DateTime = "", location = "";
-    int flag = 0;
+    String heartBeat = "", bodyTemp = "", bloodPress = "", DateTime = "", location = "", doctorName = "";
+    int flag = 0, checkId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,74 +75,14 @@ public class MakeCheckActivity extends AppCompatActivity implements NavigationVi
 
         setupViews();
 
+        lastCheck = new ArrayList<>();
+
+        getDoctorName();
+
+        get_Check_Id();
+
         setupNavigation();
         updateNavHeader();
-
-//        getCurrentLocation();
-    }
-
-    private int REQUEST_CODE = 111;
-
-    private void getCurrentLocation() {
-
-        if (ContextCompat.checkSelfPermission(
-                getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    MakeCheckActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_CODE
-            );
-        } else {
-            getLocation();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE && grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getCurrentLocation();
-            } else {
-                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void getLocation() {
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(3000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        LocationServices.getFusedLocationProviderClient(MakeCheckActivity.this)
-                .requestLocationUpdates(locationRequest, new LocationCallback() {
-
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        super.onLocationResult(locationResult);
-                        LocationServices.getFusedLocationProviderClient(MakeCheckActivity.this)
-                                .removeLocationUpdates(this);
-                        if(locationRequest != null && locationResult.getLocations().size()>0){
-                            int latestLocationIndex = locationResult.getLocations().size();
-                            double latitude = 0.0 , longitude = 0.0;
-                            latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
-                            longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
-                        textView11.setText("Lati = " + latitude + " Long " + longitude);
-                        }
-                    }
-                }, Looper.getMainLooper());
     }
 
     void calculate() {
@@ -149,10 +97,10 @@ public class MakeCheckActivity extends AppCompatActivity implements NavigationVi
 
         Random random = new Random();
 
-        heart = 55 + random.nextInt(105 - 55);
+        heart = 59 + random.nextInt(100 - 59);
         temp = 36.0 + (37.5 - 36.0) * random.nextDouble();
         bloodPress1 = 90 + random.nextInt(120 - 90);
-        bloodPress2 = 55 + random.nextInt(80 - 55);
+        bloodPress2 = 59 + random.nextInt(80 - 59);
 
         double temp2 = Double.parseDouble(String.format("%.1f", temp));
 
@@ -168,14 +116,103 @@ public class MakeCheckActivity extends AppCompatActivity implements NavigationVi
 
     public int calculateNormal(int heartbeat, double bodyTemp, int bloodPress1, int bloodPress2) {
 
+        int x = 0;
         if (heartbeat >= 60 && heartbeat <= 100) {
-            if (bodyTemp >= 36.1 && bodyTemp < 37.2) {
+            if (bodyTemp >= 36.1 && bodyTemp <= 37.2) {
                 if (bloodPress1 >= 90 && bloodPress1 <= 120 && bloodPress2 >= 60 && bloodPress2 <= 80) {
-                    return 0;
+                    x = 0;
+                }else{
+                    x = 1;
                 }
+            }else {
+                x = 1;
             }
+        }else {
+            x = 1;
         }
-        return 1;
+        return x;
+    }
+
+    List<Check> lastCheck;
+
+    public void get_Check_Id(){
+
+        String URL2 = "http://192.168.1.28:80/MEM_System/lastCheck.php?cat="+ patientId ;
+
+        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, URL2, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray ja = response.getJSONArray("result");
+
+                            Check check;
+
+                            for (int i = 0; i < ja.length(); i++) {
+
+                                JSONObject jsonObject = ja.getJSONObject(i);
+                                String checkid = jsonObject.getString("checkId");
+                                String hertBeat = jsonObject.getString("heartBeat");
+                                String bodyTemp = jsonObject.getString("bodyTemp");
+                                String bloodPressure = jsonObject.getString("bloodPressure");
+                                String location = jsonObject.getString("location");
+                                String dateOfCheck = jsonObject.getString("dateOfCheck");
+                                String flag = jsonObject.getString("flag");
+                                String patient_id = jsonObject.getString("patientId");
+
+                                if(patientId.equals(patient_id)){
+                                    check = new Check(Integer.parseInt(checkid), hertBeat, bodyTemp, bloodPressure,location, dateOfCheck,role, flag,fullname,email);
+                                    lastCheck.add(check);
+                                }
+                            }
+
+                            checkId = lastCheck.get(0).getCheckId() + 1;
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", "Error");
+            }
+        });
+        MySingleton.getInstance(this).addToRequestQueue(jor);
+    }
+
+    public void getDoctorName(){
+
+        String URL3 = "http://192.168.1.28:80/MEM_System/doctorName.php?cat="+ patientId ;
+
+        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, URL3, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray ja = response.getJSONArray("result");
+
+                            Check check;
+
+                            for (int i = 0; i < ja.length(); i++) {
+
+                                JSONObject jsonObject = ja.getJSONObject(i);
+                                doctorName = jsonObject.getString("doctorname");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", "Error");
+            }
+        });
+        MySingleton.getInstance(this).addToRequestQueue(jor);
     }
 
     public void setupViews() {
@@ -208,7 +245,7 @@ public class MakeCheckActivity extends AppCompatActivity implements NavigationVi
                         });
                         try {
                             // Sleep for 100 milliseconds.
-                            Thread.sleep(100);
+                            Thread.sleep(200);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -302,7 +339,9 @@ public class MakeCheckActivity extends AppCompatActivity implements NavigationVi
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(MakeCheckActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -328,12 +367,13 @@ public class MakeCheckActivity extends AppCompatActivity implements NavigationVi
 
         prepareProgressBar();
 
-
         calculate();
 
         String text = "";
 
-        if (!heartBeat.equals("") && !bodyTemp.equals("") && !bloodPress.equals("") && !location.equals("") && !DateTime.equals("") && flag != 0 && !patientId.equals("") ) {
+        String checkIds = String.valueOf(checkId);
+
+        if (!heartBeat.equals("") && !bodyTemp.equals("") && !bloodPress.equals("") && !location.equals("") && !DateTime.equals("") && flag != 0 && !patientId.equals("") && !checkIds.equals("") && !doctorName.equals("") && !fullname.equals("")) {
 
             String data = URLEncoder.encode("heartBeat", "UTF-8")
                     + "=" + URLEncoder.encode(heartBeat, "UTF-8");
@@ -356,6 +396,14 @@ public class MakeCheckActivity extends AppCompatActivity implements NavigationVi
             data += "&" + URLEncoder.encode("patientId", "UTF-8")
                     + "=" + URLEncoder.encode(patientId, "UTF-8");
 
+            data += "&" + URLEncoder.encode("checkId", "UTF-8")
+                    + "=" + URLEncoder.encode(checkIds, "UTF-8");
+
+            data += "&" + URLEncoder.encode("doctorName", "UTF-8")
+                    + "=" + URLEncoder.encode(doctorName, "UTF-8");
+
+            data += "&" + URLEncoder.encode("patientName", "UTF-8")
+                    + "=" + URLEncoder.encode(fullname, "UTF-8");
 
             BufferedReader reader = null;
 
@@ -414,11 +462,10 @@ public class MakeCheckActivity extends AppCompatActivity implements NavigationVi
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(MakeCheckActivity.this, result, Toast.LENGTH_LONG).show();
+            get_Check_Id();
+            Toast.makeText(MakeCheckActivity.this, result , Toast.LENGTH_LONG).show();
         }
     }
-
-
 
     public void make_check_BtnAction(View view) {
 

@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.birzeit.memsystem.LoginActivity;
 import com.birzeit.memsystem.Models.Patient;
 import com.birzeit.memsystem.R;
 import com.google.android.material.navigation.NavigationView;
@@ -195,7 +196,9 @@ public class EditPatientInfoActivity extends AppCompatActivity implements Naviga
             finish();
 
         }else if(item.getItemId() == R.id.nav_logOut){
-
+            Intent intent = new Intent(EditPatientInfoActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -319,8 +322,6 @@ public class EditPatientInfoActivity extends AppCompatActivity implements Naviga
             prof_relative1_txt.setText(list.get(0).getRelative1());;
             prof_relative2_txt.setText(list.get(0).getRelative2());
             prof_docname_txt.setText(list.get(0).getDoctorname());
-
-
         }
     }
 
